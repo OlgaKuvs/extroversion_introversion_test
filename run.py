@@ -29,14 +29,17 @@ print_red_on_cyan("Hello, Universe!")
 """
 
 # print(Fore.RED + Back.YELLOW  + "Welcome to Extroversion Introversion Test")
-cprint(" Welcome to Extroversion Introversion Test! ", "green", "on_red")
+cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 
-name_str = input("Please enter your name:\n")
+name = input("Please enter your name:\n")
 # email_str = input("Please enter your email:\n")
+name_str = name.split()
+name_str = ''.join(name_str)
+
 if name_str.isalpha():
-    print(f"Hello, {name_str}\n")
+    print(Fore.WHITE + Back.CYAN + f" Hello, {name}! Would you like to start test? Please type Y/N ")
 else:
-     print(f"Incorrect input... Please enter correct name: \n")
+     print(Fore.WHITE + Back.RED + f"Invalid data... Please enter correct name:")
 
 
 
