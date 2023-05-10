@@ -1,3 +1,5 @@
-# Your code goes here.
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
+# from openpyxl import Workbook
+from openpyxl import load_workbook
+# wb = Workbook()
+wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')
+print(wb2.sheetnames)
