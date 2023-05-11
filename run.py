@@ -36,18 +36,17 @@ cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 def start_test():
     while True:
         name = input("Please enter your name:\n")
-        name_valid = validate_name(name)
+        name_valid = validate_name(name)        
         
-        try: 
-            if name_valid:
-                cprint(f" Hello, {name}!", "blue","on_light_grey") 
-                while True:
-                    email_str = input("Please enter your email:")                
-                    if validate_email(email_str):
-                        print("Valid Email")
-                        break
+        if name_valid:
+            cprint(f"\n Hello, {name}!", "blue","on_light_grey") 
+            while True:
+                email_str = input("\n Please enter your email: \n")                
+                if validate_email(email_str):
+                    cprint(f"\n Thank you, {name}. Would you like to start test? Please type Y/N ", "blue","on_light_grey")
+                    break
             break            
-        except:
+        else:
             print(f"Invalid data, please try again.\n")          
     
             
@@ -84,6 +83,6 @@ def validate_email(email_val):
 
 start_test()   
 
-# Would you like to start test? Please type Y/N
+
 
 
