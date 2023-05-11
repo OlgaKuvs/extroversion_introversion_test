@@ -37,7 +37,7 @@ name_str = name.split()
 name_str = ''.join(name_str)
 
 if name_str.isalpha():
-    print(Fore.WHITE + Back.CYAN + f" Hello, {name}! Would you like to start test? Please type Y/N ")
+    cprint(f" Hello, {name}! Would you like to start test? Please type Y/N ", "blue","on_light_grey")
 else:
      print(Fore.WHITE + Back.RED + f"Invalid data... Please enter correct name:")
 
