@@ -3,11 +3,13 @@ from colorama import just_fix_windows_console
 from colorama import Fore, Back, Style
 from colorama import init
 from termcolor import colored, cprint
+import re
 
 just_fix_windows_console()
 init(autoreset=True)
 
 wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 ws = wb2.active
 ws2 = ws['A4'].value
@@ -31,16 +33,57 @@ print_red_on_cyan("Hello, Universe!")
 # print(Fore.RED + Back.YELLOW  + "Welcome to Extroversion Introversion Test")
 cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 
-name = input("Please enter your name:\n")
-# email_str = input("Please enter your email:\n")
-name_str = name.split()
-name_str = ''.join(name_str)
+def start_test():
+    while True:
+        name = input("Please enter your name:\n")
+        name_valid = validate_name(name)
+        
+        try: 
+            if name_valid:
+                cprint(f" Hello, {name}!", "blue","on_light_grey") 
+                while True:
+                    email_str = input("Please enter your email:")                
+                    if validate_email(email_str):
+                        print("Valid Email")
+                        break
+            break            
+        except:
+            print(f"Invalid data, please try again.\n")          
+    
+            
+       
+def validate_name(name_val):
+    """
+    Splits a string into a list and then join the list back into one string without spaces.
+    Check if all the characters are alphabet letters.         
+    """    
+    
+    name_check = "".join(name_val.split())     
+    if name_check.isalpha():
+        print("Name Valid")  
+        return True  
+    else:        
+        print(Fore.WHITE + Back.RED + f"Invalid name {name_val}... Please enter correct name")
+        print("\n")
+        return False 
+ 
+    
 
-if name_str.isalpha():
-    cprint(f" Hello, {name}! Would you like to start test? Please type Y/N ", "blue","on_light_grey")
-else:
-     print(Fore.WHITE + Back.RED + f"Invalid data... Please enter correct name:")
+def validate_email(email_val):
+    """ 
+    Check if email address valid or not.       
+    """
+    x = re.fullmatch(regex, email_val)
+    if x:
+        return True    
+        
+    else:        
+        print(Fore.WHITE + Back.RED + f"Invalid data... Please enter correct e-mail")
+        print("\n")
+        return False   
 
+start_test()   
 
+# Would you like to start test? Please type Y/N
 
 
