@@ -8,12 +8,7 @@ import re
 just_fix_windows_console()
 init(autoreset=True)
 
-wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-
-ws = wb2.active
-ws2 = ws['A4'].value
-ws3 = ws['B4'].value
 
 """ 
 print(Fore.RED + 'some red text')
@@ -81,33 +76,34 @@ def validate_email(email_val):
         return False 
 
 def start_test(name_tested):
-    cprint(f"\n Thank you, {name_tested}. Would you like to start test? Please type Y/N ", "blue","on_light_grey")
+    cprint(f"\nThank you, {name_tested}. Let's start. Are you oriented more towards the outer world or the inner world? ", "blue","on_light_grey")
+    cprint("This easy test can give you a clear answer and help you understand your personality.  ", "darkblue","on_light_grey")
+    cprint("Please enter Y for 'Yes' answer and N for 'No' answer.  ", "blue","on_light_grey")
+    cprint("If you want to quit test, please enter Q  ", "blue","on_light_grey")   
+    workbook_loaded()
+        
+
+
+def validate_agreement():
     while True:
-        starting_test = input("\n Y/N ?\n")
-        val = validate_agreement(starting_test)    
-        if val:
-            workbook_loaded()
-        break
-
-
-def validate_agreement(agree):
-    if (agree.lower() == "y"):
-        return True       
-    elif (agree.lower() == "n"):
-        return False
-    else:
-        print(Fore.WHITE + Back.RED + f"Invalid input {agree}... Please enter Y/N ") 
+        agree = input("\n Y/N ?\n")
+        if (agree.lower() == "y"):
+            return True       
+        elif (agree.lower() == "n"):
+            return False
+        else:
+            print(Fore.WHITE + Back.RED + f"Invalid input {agree}... Please enter Y/N ") 
+        
 
 def workbook_loaded():
     try:
-        wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')        
-    except FileNotFoundError as e:
-        print(Fore.WHITE + Back.RED + f"File not found...")
+        wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')                     
+    except FileNotFoundError as fnf_error:
+        print(Fore.WHITE + Back.RED + fnf_error)
     else:
-        ws = wb2.active
-        ws2 = ws['A4'].value
-        print(ws2)
-        
+        ws = wb2['Test']
+        ws2 = ws['B4'].value
+        print(ws2)        
 
 
 check_data() 
