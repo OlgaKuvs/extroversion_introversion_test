@@ -53,8 +53,7 @@ def validate_name(name_val):
     """    
     
     name_check = "".join(name_val.split())     
-    if name_check.isalpha():
-        print("Name Valid")  
+    if name_check.isalpha():         
         return True  
     else:        
         print(Fore.WHITE + Back.RED + f"Invalid name {name_val}... Please enter correct name")
@@ -77,10 +76,25 @@ def validate_email(email_val):
 
 def start_test(name_tested):
     cprint(f"\nThank you, {name_tested}. Let's start. Are you oriented more towards the outer world or the inner world? ", "blue","on_light_grey")
-    cprint("This easy test can give you a clear answer and help you understand your personality.  ", "darkblue","on_light_grey")
+    cprint("This easy test can give you a clear answer and help you understand your personality.  ", "blue","on_light_grey")
     cprint("Please enter Y for 'Yes' answer and N for 'No' answer.  ", "blue","on_light_grey")
     cprint("If you want to quit test, please enter Q  ", "blue","on_light_grey")   
-    workbook_loaded()
+    wsheet = workbook_loaded()    
+    test_questions(wsheet)
+    
+
+
+def test_questions(worksheet):
+    # questions = []    
+    for column in worksheet.iter_cols():          
+        column_name = column[0].value
+        if column_name == "Questions":
+           print(column_name) 
+           for cell in column:
+                print(cell.value)
+
+    
+
         
 
 
@@ -102,8 +116,7 @@ def workbook_loaded():
         print(Fore.WHITE + Back.RED + fnf_error)
     else:
         ws = wb2['Test']
-        ws2 = ws['B4'].value
-        print(ws2)        
+    return ws               
 
 
 check_data() 
