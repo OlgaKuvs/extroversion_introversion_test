@@ -79,34 +79,45 @@ def start_test(name_tested):
     cprint("This easy test can give you a clear answer and help you understand your personality.  ", "blue","on_light_grey")
     cprint("Please enter Y for 'Yes' answer and N for 'No' answer.  ", "blue","on_light_grey")
     cprint("If you want to quit test, please enter Q  ", "blue","on_light_grey")   
-    wsheet = workbook_loaded()    
-    test_questions(wsheet)
+    wsheet = workbook_loaded() 
+    list_answers(wsheet)
+    # questions = list_questions(wsheet)    
     
+    # check_answers(questions)  
 
-
-def test_questions(worksheet):
-    # questions = []    
+def list_questions(worksheet):
+    questions = []    
     for column in worksheet.iter_cols():          
         column_name = column[0].value
-        if column_name == "Questions":
-           print(column_name) 
-           for cell in column:
-                print(cell.value)
+        if column_name == "Questions":                     
+            for cell in column:
+               questions.append(cell.value)
+            return questions 
 
-    
+def list_answers(worksheet):
+    answers = [] 
+    for column in worksheet.iter_cols():          
+        column_name = column[0].value       
+        if column_name == "Answers": 
+            for cell in column:
+               answers.append(cell.value)
+            return answers        
 
-        
 
+def check_answers(questions_all):
+    # while True:
+        for i in range(0, len(questions_all)):
+            print(questions_all[i+1])
 
-def validate_agreement():
-    while True:
-        agree = input("\n Y/N ?\n")
-        if (agree.lower() == "y"):
-            return True       
-        elif (agree.lower() == "n"):
-            return False
-        else:
-            print(Fore.WHITE + Back.RED + f"Invalid input {agree}... Please enter Y/N ") 
+            user_answer = input("\n Y/N ?\n")
+            if (user_answer.lower() == "y"):
+                return True       
+            elif (user_answer.lower() == "n"):
+                return False
+            elif (user_answer.lower() == "q"):
+                break
+            else:
+                print(Fore.WHITE + Back.RED + f"Invalid input {user_answer}... Please enter Y/N ") 
         
 
 def workbook_loaded():
