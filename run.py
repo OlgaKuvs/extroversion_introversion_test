@@ -80,10 +80,11 @@ def start_test(name_tested):
     cprint("Please enter Y for 'Yes' answer and N for 'No' answer.  ", "blue","on_light_grey")
     cprint("If you want to quit test, please enter Q  ", "blue","on_light_grey")   
     wsheet = workbook_loaded() 
-    list_answers(wsheet)
-    # questions = list_questions(wsheet)    
-    
-    # check_answers(questions)  
+    answers = list_answers(wsheet)
+    questions = list_questions(wsheet)
+    test_dictionary = dict(zip(questions, answers)) 
+    print(test_dictionary) 
+    # check_answers(questions, answers)  
 
 def list_questions(worksheet):
     questions = []    
@@ -104,9 +105,9 @@ def list_answers(worksheet):
             return answers        
 
 
-def check_answers(questions_all):
+def check_answers(questions_all, answers_all):
     # while True:
-        for i in range(0, len(questions_all)):
+        for i, n in range(0, len(questions_all)):
             print(questions_all[i+1])
 
             user_answer = input("\n Y/N ?\n")
