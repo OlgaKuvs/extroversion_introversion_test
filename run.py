@@ -6,7 +6,7 @@ from termcolor import colored, cprint
 import re
 
 just_fix_windows_console()
-init(autoreset=True)
+# init(autoreset=True)
 
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
@@ -42,7 +42,7 @@ def check_data():
                     break
             break            
         else:
-            print(f"Invalid data, please try again.\n")          
+            cprint(f"Invalid data, please try again.\n", "white", "on_red")          
     
             
        
@@ -56,7 +56,7 @@ def validate_name(name_val):
     if name_check.isalpha():         
         return True  
     else:        
-        print(Fore.WHITE + Back.RED + f"Invalid name {name_val}... Please enter correct name")
+        cprint(f"Invalid name {name_val}... Please enter correct name", "white", "on_red")        
         print("\n")
         return False 
  
@@ -71,14 +71,14 @@ def validate_email(email_val):
         return True    
         
     else:        
-        print(Fore.WHITE + Back.RED + f"Invalid e-mail {email_val}... Please enter correct e-mail")       
+        cprint(f"Invalid e-mail {email_val}... Please enter correct e-mail", "white", "on_red")       
         return False 
 
 def start_test(name_tested):
-    cprint(f"\nThank you, {name_tested}. Let's start. Are you oriented more towards the outer world or the inner world? ", "blue","on_light_grey")
-    cprint("This easy test can give you a clear answer and help you understand your personality.  ", "blue","on_light_grey")
-    cprint("Please enter Y for 'Yes' answer and N for 'No' answer.  ", "blue","on_light_grey")
-    cprint("If you want to quit test, please enter Q  ", "blue","on_light_grey")   
+    print(Fore.WHITE + Back.BLUE + f"\nThank you, {name_tested}. Let's start. Are you oriented more towards the outer world or the inner world?\n ")    
+    print(f"This easy test can give you a clear answer and help you understand your personality.\n ")
+    print(f"Please enter Y for 'Yes' answer and N for 'No' answer. ")
+    print(Style.RESET_ALL)
     wsheet = workbook_loaded() 
     answers = list_answers(wsheet)
     questions = list_questions(wsheet)
@@ -107,21 +107,34 @@ def list_answers(worksheet):
 
 
 def check_answers(test_check):
-    # while True:
-              
-        for a in test_check.keys():
-            print(a)        
+                 
+        for a in test_check.keys():           
+                print(Fore.WHITE + Back.BLUE + f"\n {a}")        
+                print(Style.RESET_ALL)
 
-            user_answer = input("\n Y/N ?\n")
-            if (user_answer.lower() == "y"):
-                continue       
-            elif (user_answer.lower() == "n"):
-                return False
-            elif (user_answer.lower() == "q"):
-                print("q")
-                #break
-            else:
-                print(Fore.WHITE + Back.RED + f"Invalid input {user_answer}... Please enter Y/N ") 
+                user_answer = input(" Y/N ?\n")
+                if (user_answer.lower() == "y"):
+                    continue       
+                elif (user_answer.lower() == "n"):
+                    continue
+                elif (user_answer.lower() == "q"):                
+                    break
+                else:
+                    """ 
+                    while(user_answer.lower() !="y" or user_answer.lower() !="n" or user_answer.lower() !="q"): 
+                        # if(user_answer.lower() !="y" or user_answer.lower() !="n" or user_answer.lower() !="q"):
+                        print(user_answer.lower() !="y")
+                        cprint(f"Invalid input {user_answer}... Please enter Y / N / Q ", "white", "on_red") 
+
+                        print(Fore.WHITE + Back.BLUE + f"\n {a}")
+                        print(Style.RESET_ALL)
+                        
+                        user_answer = input(" Y/N \n")
+                    """
+                        
+
+
+
         
 
 def workbook_loaded():
