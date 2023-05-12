@@ -82,9 +82,8 @@ def start_test(name_tested):
     wsheet = workbook_loaded() 
     answers = list_answers(wsheet)
     questions = list_questions(wsheet)
-    test_dictionary = dict(zip(questions, answers)) 
-    print(test_dictionary) 
-    # check_answers(questions, answers)  
+    test_dictionary = dict(zip(questions, answers))     
+    check_answers(test_dictionary)  
 
 def list_questions(worksheet):
     questions = []    
@@ -93,30 +92,34 @@ def list_questions(worksheet):
         if column_name == "Questions":                     
             for cell in column:
                questions.append(cell.value)
+            questions.pop(0)
             return questions 
 
 def list_answers(worksheet):
     answers = [] 
     for column in worksheet.iter_cols():          
         column_name = column[0].value       
-        if column_name == "Answers": 
+        if column_name == "Answers":             
             for cell in column:
                answers.append(cell.value)
-            return answers        
+            answers.pop(0)
+            return answers       
 
 
-def check_answers(questions_all, answers_all):
+def check_answers(test_check):
     # while True:
-        for i, n in range(0, len(questions_all)):
-            print(questions_all[i+1])
+              
+        for a in test_check.keys():
+            print(a)        
 
             user_answer = input("\n Y/N ?\n")
             if (user_answer.lower() == "y"):
-                return True       
+                continue       
             elif (user_answer.lower() == "n"):
                 return False
             elif (user_answer.lower() == "q"):
-                break
+                print("q")
+                #break
             else:
                 print(Fore.WHITE + Back.RED + f"Invalid input {user_answer}... Please enter Y/N ") 
         
