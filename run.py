@@ -33,17 +33,17 @@ print_red_on_cyan("Hello, Universe!")
 # print(Fore.RED + Back.YELLOW  + "Welcome to Extroversion Introversion Test")
 cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 
-def start_test():
+def check_data():
     while True:
-        name = input("Please enter your name:\n")
+        name = input("\nPlease enter your name:\n")
         name_valid = validate_name(name)        
         
         if name_valid:
             cprint(f"\n Hello, {name}!", "blue","on_light_grey") 
             while True:
-                email_str = input("\n Please enter your email: \n")                
+                email_str = input("\nPlease enter your email: \n")                
                 if validate_email(email_str):
-                    cprint(f"\n Thank you, {name}. Would you like to start test? Please type Y/N ", "blue","on_light_grey")
+                    start_test(name) 
                     break
             break            
         else:
@@ -77,11 +77,42 @@ def validate_email(email_val):
         return True    
         
     else:        
-        print(Fore.WHITE + Back.RED + f"Invalid data... Please enter correct e-mail")
-        print("\n")
-        return False   
+        print(Fore.WHITE + Back.RED + f"Invalid e-mail {email_val}... Please enter correct e-mail")       
+        return False 
 
-start_test()   
+def start_test(name_tested):
+    cprint(f"\n Thank you, {name_tested}. Would you like to start test? Please type Y/N ", "blue","on_light_grey")
+    while True:
+        starting_test = input("\n Y/N ?\n")
+        val = validate_agreement(starting_test)    
+        if val:
+            workbook_loaded()
+        break
+
+
+def validate_agreement(agree):
+    if (agree.lower() == "y"):
+        return True       
+    elif (agree.lower() == "n"):
+        return False
+    else:
+        print(Fore.WHITE + Back.RED + f"Invalid input {agree}... Please enter Y/N ") 
+
+def workbook_loaded():
+    try:
+        wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')        
+    except FileNotFoundError as e:
+        print(Fore.WHITE + Back.RED + f"File not found...")
+    else:
+        ws = wb2.active
+        ws2 = ws['A4'].value
+        print(ws2)
+        
+
+
+check_data() 
+
+ 
 
 
 
