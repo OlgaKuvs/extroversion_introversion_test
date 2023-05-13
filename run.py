@@ -10,6 +10,13 @@ just_fix_windows_console()
 
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
+class QuestionsAnswers:
+    def __init__(self, questions, answers):
+        self.questions = questions
+        self.answers = answers
+
+list = []
+
 """ 
 print(Fore.RED + 'some red text')
 print(Back.GREEN + 'and with a green background')
@@ -82,8 +89,12 @@ def start_test(name_tested):
     wsheet = workbook_loaded() 
     answers = list_answers(wsheet)
     questions = list_questions(wsheet)
-    test_dictionary = dict(zip(questions, answers))     
-    check_answers(test_dictionary)  
+       
+    for a, n in zip(questions, answers): 
+        print(a, n)        
+        list.append(QuestionsAnswers(a, n))
+    # print(list[0].questions)      
+    check_answers(list)
 
 def list_questions(worksheet):
     questions = []    
@@ -107,36 +118,25 @@ def list_answers(worksheet):
 
 
 def check_answers(test_check):
-                 
-        for a in test_check.keys():           
-                print(Fore.WHITE + Back.BLUE + f"\n {a}")        
-                print(Style.RESET_ALL)
-
-                user_answer = input(" Y/N ?\n")
-                if (user_answer.lower() == "y"):
-                    continue       
-                elif (user_answer.lower() == "n"):
-                    continue
-                elif (user_answer.lower() == "q"):                
-                    break
-                else:
-                    """ 
-                    while(user_answer.lower() !="y" or user_answer.lower() !="n" or user_answer.lower() !="q"): 
-                        # if(user_answer.lower() !="y" or user_answer.lower() !="n" or user_answer.lower() !="q"):
-                        print(user_answer.lower() !="y")
-                        cprint(f"Invalid input {user_answer}... Please enter Y / N / Q ", "white", "on_red") 
-
-                        print(Fore.WHITE + Back.BLUE + f"\n {a}")
-                        print(Style.RESET_ALL)
-                        
-                        user_answer = input(" Y/N \n")
-                    """
-                        
-
-
-
+    i = 0
+    while True:
+        test_item = test_check[i]            
         
+        print(Fore.WHITE + Back.BLUE + f"\n {test_item.questions}")        
+        print(Style.RESET_ALL)                
 
+        user_answer = input(" Y/N ?\n")
+        if (user_answer.lower() == "y"):
+            i+=1
+            continue       
+        elif (user_answer.lower() == "n"):
+            i+=1
+            continue
+        elif (user_answer.lower() == "q"):                
+            break
+        
+            
+                    
 def workbook_loaded():
     try:
         wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')                     
