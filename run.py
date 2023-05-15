@@ -17,21 +17,6 @@ class QuestionsAnswers:
 
 list = []
 
-""" 
-print(Fore.RED + 'some red text')
-print(Back.GREEN + 'and with a green background')
-print(Style.DIM + 'and in dim text')
-print(Style.RESET_ALL)
-
-text = colored("Hello, World!", "red", attrs=["reverse", "blink"])
-print(text)
-cprint("Hello, World!", "green", "on_red")
-
-print_red_on_cyan = lambda x: cprint(x, "red", "on_cyan")
-print_red_on_cyan("Hello, World!")
-print_red_on_cyan("Hello, Universe!")
-"""
-
 # print(Fore.RED + Back.YELLOW  + "Welcome to Extroversion Introversion Test")
 cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 
@@ -60,7 +45,7 @@ def validate_name(name_val):
     """    
     
     name_check = "".join(name_val.split())     
-    if name_check.isalpha():         
+    if name_check.isalpha() and len(name_check) > 1 :         
         return True  
     else:        
         cprint(f"Invalid name {name_val}... Please enter correct name", "white", "on_red")        
@@ -114,27 +99,47 @@ def list_answers(worksheet):
             answers.pop(0)
             return answers       
 
+#GetNextQuestion(score):
+    #if score <-3 
+    #test-item = test_check_intro where isUsed ==0
+#    return test_item
 
 def check_answers(test_check):
-    i = 0
-    while True:
-        test_item = test_check[i]            
-        
-        print(Fore.WHITE + Back.BLUE + f"\n {test_item.questions}")        
-        print(Style.RESET_ALL)                
-
-        user_answer = input(" Y/N ?\n")
-        if (user_answer.lower() == "y"):
-            i+=1
-            continue       
-        elif (user_answer.lower() == "n"):
-            i+=1
-            continue
-        elif (user_answer.lower() == "q"):                
-            break
-        
+    i = 0 
+    score = 0  
+   
+    while True:         
+            #test_item = GetNextQuestion(score)   test_check[i] 
+            key_answer = test_item.answers                             
             
+            print(Fore.WHITE + Back.BLUE + f"\n {test_item.questions}")        
+            print(Style.RESET_ALL)                
+
+            user_answer = input(" Y/N ?\n")                      
+           
+            if user_answer.lower() == "q":                
+                break 
+            elif(user_answer.lower() == "y" and key_answer == 1) :         
+                i+=1         
+                score += 1               
+                #test_item.isUsed = 1       
+            elif(user_answer.lower() == "y" and key_answer == 0):
+                i+=1 
+                score -= 1               
+                              
+            elif(user_answer.lower() == "n" and key_answer == 1) :          
+                i+=1            
+                score -= 1                
+                               
+            elif(user_answer.lower() == "n" and key_answer == 0):
+                i+=1 
+                score += 1               
+                              
+            else:
+                cprint(f"Invalid data... Please enter  Y/N or Q to Quit ", "white", "on_red")          
                     
+
+              
 def workbook_loaded():
     try:
         wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')                     
