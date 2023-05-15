@@ -11,9 +11,10 @@ just_fix_windows_console()
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 class QuestionsAnswers:
-    def __init__(self, questions, answers):
+    def __init__(self, questions, answers, question_used):
         self.questions = questions
         self.answers = answers
+        self.question_used = question_used
 
 list = []
 
@@ -73,10 +74,16 @@ def start_test(name_tested):
     print(Style.RESET_ALL)
     wsheet = workbook_loaded() 
     answers = list_answers(wsheet)
-    questions = list_questions(wsheet)
+    questions = list_questions(wsheet)    
        
     for a, n in zip(questions, answers):               
-        list.append(QuestionsAnswers(a, n))        
+        list.append(QuestionsAnswers(a, n, 0)) 
+    
+    for a in range(len(list)):      
+
+        print(list[a].questions) 
+        print(list[a].answers) 
+        print(list[a].question_used)  
     check_answers(list)
 
 def list_questions(worksheet):
@@ -99,17 +106,32 @@ def list_answers(worksheet):
             answers.pop(0)
             return answers       
 
-#GetNextQuestion(score):
-    #if score <-3 
-    #test-item = test_check_intro where isUsed ==0
-#    return test_item
+def get_next_question(inner_score, test_check_inner):      
+    
+    if inner_score >= -3 and inner_score <= 3: 
+        for i in range(len(test_check_inner)):
+            print(test_check_inner[i].questions)
+            print(test_check_inner[i].answers)
+            print(f"used = {test_check_inner[i].question_used}")
+            print(inner_score)
+            if test_check_inner[i].question_used == 0:
+                print("a")
+                #test_check_inner
+                #test-item = test_check[i]
+                return test_check_inner[i]
+            
+        
+    return None
 
-def check_answers(test_check):
-    i = 0 
+
+def check_answers(test_check):    
     score = 0  
    
     while True:         
-            #test_item = GetNextQuestion(score)   test_check[i] 
+            test_item = get_next_question(score, test_check)            
+
+            if test_item == None:                
+                break 
             key_answer = test_item.answers                             
             
             print(Fore.WHITE + Back.BLUE + f"\n {test_item.questions}")        
@@ -119,25 +141,21 @@ def check_answers(test_check):
            
             if user_answer.lower() == "q":                
                 break 
-            elif(user_answer.lower() == "y" and key_answer == 1) :         
-                i+=1         
+            elif (user_answer.lower() == "y" and key_answer == 1) :       
                 score += 1               
-                #test_item.isUsed = 1       
-            elif(user_answer.lower() == "y" and key_answer == 0):
-                i+=1 
+                test_item.question_used = 1      
+            elif (user_answer.lower() == "y" and key_answer == 0):
                 score -= 1               
-                              
-            elif(user_answer.lower() == "n" and key_answer == 1) :          
-                i+=1            
+                test_item.question_used = 1               
+            elif (user_answer.lower() == "n" and key_answer == 1) :          
                 score -= 1                
-                               
-            elif(user_answer.lower() == "n" and key_answer == 0):
-                i+=1 
+                test_item.question_used = 1                
+            elif (user_answer.lower() == "n" and key_answer == 0):
                 score += 1               
-                              
+                test_item.question_used = 1               
             else:
                 cprint(f"Invalid data... Please enter  Y/N or Q to Quit ", "white", "on_red")          
-                    
+    
 
               
 def workbook_loaded():
