@@ -90,10 +90,8 @@ def start_test(name_tested):
     answers = list_answers(wsheet)
     questions = list_questions(wsheet)
        
-    for a, n in zip(questions, answers): 
-        print(a, n)        
-        list.append(QuestionsAnswers(a, n))
-    # print(list[0].questions)      
+    for a, n in zip(questions, answers):               
+        list.append(QuestionsAnswers(a, n))        
     check_answers(list)
 
 def list_questions(worksheet):
