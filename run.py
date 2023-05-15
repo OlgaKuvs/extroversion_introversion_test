@@ -78,12 +78,12 @@ def start_test(name_tested):
        
     for a, n in zip(questions, answers):               
         list.append(QuestionsAnswers(a, n, 0)) 
-    
-    for a in range(len(list)):      
-
+    """ 
+    for a in range(len(list)):   
         print(list[a].questions) 
         print(list[a].answers) 
-        print(list[a].question_used)  
+        print(list[a].question_used)
+    """  
     check_answers(list)
 
 def list_questions(worksheet):
@@ -108,12 +108,13 @@ def list_answers(worksheet):
 
 def get_next_question(inner_score, test_check_inner):      
     
-    if inner_score >= -3 and inner_score <= 3: 
+    if inner_score >= -3 and inner_score <= 3:
+        print(f"score1 = {inner_score}")
         for i in range(len(test_check_inner)):
-            print(test_check_inner[i].questions)
-            print(test_check_inner[i].answers)
-            print(f"used = {test_check_inner[i].question_used}")
-            print(inner_score)
+            #print(test_check_inner[i].questions)
+            #print(test_check_inner[i].answers)
+            #print(f"used = {test_check_inner[i].question_used}")
+            print(f"score2 = {inner_score}")
             if test_check_inner[i].question_used == 0:
                 print("a")
                 #test_check_inner
