@@ -67,6 +67,9 @@ def validate_email(email_val):
         return False 
 
 def start_test(name_tested):
+    """
+    Starting test, loading lists of questions 
+    """
     print(Fore.WHITE + Back.BLUE + f"\nThank you, {name_tested}. Let's start. Are you oriented more towards the outer world or the inner world?\n ")    
     print(f"This easy test can give you a clear answer and help you understand your personality.\n ")
     print(f"Please enter Y for 'Yes' answer and N for 'No' answer. ")
@@ -75,6 +78,7 @@ def start_test(name_tested):
     List_test_normal = load_from_workbook("Test1")
     List_test_intra = load_from_workbook("Test2")
     List_test_extra = load_from_workbook("Test3")
+
     """ 
     normalTestSheetName = "Test1"
     wsheet1 = load_from_workbook(normalTestSheetName)
@@ -88,11 +92,11 @@ def start_test(name_tested):
         print(list[a].questions) 
         print(list[a].answers) 
         print(list[a].question_used)
-    """
-    #check_answers(l1,l2,l3)   
-    check_answers(List_test_normal,List_test_intra,List_test_extra)
+    """    
+    check_answers(List_test_normal, List_test_intra, List_test_extra)
 
 def list_questions(worksheet):
+    # get column of questions from worksheet to the list
     questions = []    
     for column in worksheet.iter_cols():          
         column_name = column[0].value
@@ -103,6 +107,7 @@ def list_questions(worksheet):
             return questions 
 
 def list_answers(worksheet):
+    # get column of answers score from worksheet to the list
     answers = [] 
     for column in worksheet.iter_cols():          
         column_name = column[0].value       
@@ -112,28 +117,44 @@ def list_answers(worksheet):
             answers.pop(0)
             return answers       
 
-def get_next_question(inner_score, list_test_normal,list_test_intra,list_test_extra):      
-    
-    if inner_score >= -3 and inner_score <= 3:
+def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_extra):
+    """
+    Сhoose a category of questions depending on the score.
+
+    """     
+    if inner_score > -3 and inner_score < 3:
         for i in range(len(list_test_normal)):
-            if list_test_normal[i].question_used == 0:                               
+            if list_test_normal[i].question_used == 0:
+                print(inner_score)                               
                 return list_test_normal[i]
-    #elif inner_score < -3:
-            
-        
+    elif inner_score <= -3:
+        for i in range(len(list_test_intra)):
+            if list_test_intra[i].question_used == 0:
+                print(inner_score)                                
+                return list_test_intra[i]
+    elif inner_score >= 3:
+        for i in range(len(list_test_extra)):
+            if list_test_extra[i].question_used == 0:
+                print(inner_score)                                
+                return list_test_extra[i]
+    check_results(inner_score)
     return None
 
 
-def check_answers(list_test_normal,list_test_intra,list_test_extra):    
+def check_answers(list_test_normal, list_test_intra, list_test_extra): 
+    """
+    Run a while loop to check user's answers, if 'Yes' or 'No', continue test, if 'Q' - quit.
+    The loop will repeatedly print questions, until the end of questions list.
+    Check invalid input (any character except 'Y', 'N' or 'Q') and return the error.
+    """   
     score = 0  
    
     while True:         
-            test_item = get_next_question(score, list_test_normal,list_test_intra,list_test_extra)            
+            test_item = get_next_question(score, list_test_normal, list_test_intra, list_test_extra)            
 
             if test_item == None:                
                 break 
-            key_answer = test_item.answers   
-                                   
+            key_answer = test_item.answers                                     
             
             print(Fore.WHITE + Back.BLUE + f"\n {test_item.questions}")        
             print(Style.RESET_ALL)                
@@ -157,10 +178,28 @@ def check_answers(list_test_normal,list_test_intra,list_test_extra):
             else:
                 cprint(f"Invalid data... Please enter  Y/N or Q to Quit ", "white", "on_red")          
     
-
+def check_results(score):
+    
+    #Check results depending on score and print them.
+    
+    if score >= -3 and score <= 3:
+        print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly AMBIVERT, ") 
+        print(Fore.RED + Back.WHITE + "exhibit qualities of both introversion and extroversion,") 
+        print(Fore.RED + Back.WHITE + "you can flip into either depending on their mood, context, and goals.")
+        print(Style.RESET_ALL) 
+    elif score < -3:
+        print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly INTROVERT,") 
+        print(Fore.RED + Back.WHITE + "you enjoy spending time alone and you feel more comfortable ") 
+        print(Fore.RED + Back.WHITE + "focusing on your inner thoughts and ideas.") 
+        print(Style.RESET_ALL)
+    elif score > 3:
+        print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly EXTROVERT,") 
+        print(Fore.RED + Back.WHITE + "you enjoy being around other people and you gain energy from them.") 
+        print(Style.RESET_ALL)
+    
               
 def load_from_workbook(test_sheet):
-    # open work sheet
+    # open worksheet
     try:
         wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')                     
     except FileNotFoundError as fnf_error:
@@ -168,13 +207,13 @@ def load_from_workbook(test_sheet):
     else:
         ws = wb2[test_sheet]
     
-    # populate list of answers
+    # populate list of answer scores
     answers = list_answers(ws)
 
     # populate list of questions
     questions = list_questions(ws)    
 
-    # populate list with object which contaibs questions and answers  
+    # populate list with object which contains questions and answer scores  
     list = [] 
     for a, n in zip(questions, answers):               
         list.append(QuestionsAnswers(a, n, 0)) 
