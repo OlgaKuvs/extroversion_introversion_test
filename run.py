@@ -10,6 +10,8 @@ just_fix_windows_console()
 
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
+# Class for the questions and answer key instances and used question flag
+
 class QuestionsAnswers:
     def __init__(self, questions, answers, question_used):
         self.questions = questions
@@ -22,6 +24,9 @@ class QuestionsAnswers:
 cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 
 def check_data():
+
+    # Check input for valid user's name and e-mail
+
     while True:
         name = input("\nPlease enter your name:\n")
         name_valid = validate_name(name)        
@@ -40,8 +45,8 @@ def check_data():
             
        
 def validate_name(name_val):
-    """
-    Splits a string into a list and then join the list back into one string without spaces.
+    """     
+    Splits a string (name) into a list and then join the list back into one string without spaces.
     Check if all the characters are alphabet letters.         
     """    
     
@@ -56,7 +61,7 @@ def validate_name(name_val):
 
 def validate_email(email_val):
     """ 
-    Check if email address valid or not.       
+    Check if email address is valid or not.       
     """
     x = re.fullmatch(regex, email_val)
     if x:
@@ -75,28 +80,14 @@ def start_test(name_tested):
     print(f"Please enter Y for 'Yes' answer and N for 'No' answer. ")
     print(Style.RESET_ALL)
 
-    List_test_normal = load_from_workbook("Test1")
-    List_test_intra = load_from_workbook("Test2")
-    List_test_extra = load_from_workbook("Test3")
-
-    """ 
-    normalTestSheetName = "Test1"
-    wsheet1 = load_from_workbook(normalTestSheetName)
-    answers = list_answers(wsheet1)
-    questions = list_questions(wsheet1)    
+    list_t_normal = load_from_workbook("Test1")
+    list_t_intra = load_from_workbook("Test2")
+    list_t_extra = load_from_workbook("Test3")
        
-    for a, n in zip(questions, answers):               
-        list.append(QuestionsAnswers(a, n, 0)) 
-    """ """
-    for a in range(len(list)):   
-        print(list[a].questions) 
-        print(list[a].answers) 
-        print(list[a].question_used)
-    """    
-    check_answers(List_test_normal, List_test_intra, List_test_extra)
+    check_answers(list_t_normal, list_t_intra, list_t_extra)
 
 def list_questions(worksheet):
-    # get column of questions from worksheet to the list
+    # Get column of the questions from worksheet to the list
     questions = []    
     for column in worksheet.iter_cols():          
         column_name = column[0].value
@@ -107,7 +98,7 @@ def list_questions(worksheet):
             return questions 
 
 def list_answers(worksheet):
-    # get column of answers score from worksheet to the list
+    # Get column of the answer key from worksheet to the list
     answers = [] 
     for column in worksheet.iter_cols():          
         column_name = column[0].value       
@@ -196,6 +187,7 @@ def check_results(score):
         print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly EXTROVERT,") 
         print(Fore.RED + Back.WHITE + "you enjoy being around other people and you gain energy from them.") 
         print(Style.RESET_ALL)
+        
     
               
 def load_from_workbook(test_sheet):
