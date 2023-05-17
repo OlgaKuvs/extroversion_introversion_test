@@ -75,8 +75,8 @@ def start_test(name_tested):
     """
     Starting test, loading lists of questions 
     """
-    print(Fore.WHITE + Back.BLUE + f"\nThank you, {name_tested}. Let's start. Are you oriented more towards the outer world or the inner world?\n ")    
-    print(f"This easy test can give you a clear answer and help you understand your personality.\n ")
+    print(Fore.WHITE + Back.BLUE + f"\nThank you, {name_tested}. Let's start. Are you oriented more towards \n the outer world or the inner world?\n ")    
+    print(f"This easy test can give you a clear answer and help you understand \n your personality.\n ")
     print(f"Please enter Y for 'Yes' answer and N for 'No' answer. ")
     print(Style.RESET_ALL)
 
