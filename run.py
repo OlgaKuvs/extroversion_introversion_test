@@ -25,22 +25,22 @@ cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
 
 def check_data():
 
-    # Check input for valid user's name and e-mail
+    # Check input for valid user's name and e-mail. If yes call start_test function.
 
     while True:
-        name = input("\nPlease enter your name:\n")
+        name = input("\n Please enter your name:\n")
         name_valid = validate_name(name)        
         
         if name_valid:
-            cprint(f"\n Hello, {name}!", "blue","on_light_grey") 
+            cprint(f"\n Hello, {name}!", "white", "on_blue") 
             while True:
-                email_str = input("\nPlease enter your email: \n")                
+                email_str = input("\n Please enter your email: \n")                
                 if validate_email(email_str):
                     start_test(name) 
                     break
             break            
         else:
-            cprint(f"Invalid data, please try again.\n", "white", "on_red")          
+            cprint(f" Invalid data, please try again.\n", "white", "on_red")          
     
             
        
@@ -54,7 +54,7 @@ def validate_name(name_val):
     if name_check.isalpha() and len(name_check) > 1 :         
         return True  
     else:        
-        cprint(f"Invalid name {name_val}... Please enter correct name", "white", "on_red")        
+        cprint(f" Invalid name {name_val}... Please enter correct name", "white", "on_red")        
         print("\n")
         return False  
     
@@ -68,16 +68,16 @@ def validate_email(email_val):
         return True    
         
     else:        
-        cprint(f"Invalid e-mail {email_val}... Please enter correct e-mail", "white", "on_red")       
+        cprint(f" Invalid e-mail {email_val}... Please enter correct e-mail", "white", "on_red")       
         return False 
 
 def start_test(name_tested):
     """
     Starting test, loading lists of questions 
     """
-    print(Fore.WHITE + Back.BLUE + f"\nThank you, {name_tested}. Let's start. Are you oriented more towards \n the outer world or the inner world?\n ")    
-    print(f"This easy test can give you a clear answer and help you understand \n your personality.\n ")
-    print(f"Please enter Y for 'Yes' answer and N for 'No' answer. ")
+    print(Fore.WHITE + Back.BLUE + f"\n Thank you, {name_tested}. Let's start.\n Are you oriented more towards \n the outer world or the inner world?\n ")    
+    print(f" This easy test can give you a clear answer and help you understand \n your personality.\n ")
+    print(f" Please enter Y for 'Yes' answer and N for 'No' answer. ")
     print(Style.RESET_ALL)
 
     list_t_normal = load_from_workbook("Test1")
@@ -167,7 +167,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
                 score += 1               
                 test_item.question_used = 1               
             else:
-                cprint(f"Invalid data... Please enter  Y/N or Q to Quit ", "white", "on_red")          
+                cprint(f" Invalid data... Please enter  Y/N or Q to Quit ", "white", "on_red")          
     
 def check_results(score):
     
@@ -193,13 +193,13 @@ def load_from_workbook(test_sheet):
     else:
         ws = wb2[test_sheet]
     
-    # populate list of answer scores
+    # populate list of answer keys
     answers = list_answers(ws)
 
     # populate list of questions
     questions = list_questions(ws)    
 
-    # populate list with object which contains questions and answer scores  
+    # populate list with object which contains questions and answer keys 
     list = [] 
     for a, n in zip(questions, answers):               
         list.append(QuestionsAnswers(a, n, 0)) 
