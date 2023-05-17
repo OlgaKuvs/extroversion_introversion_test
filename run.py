@@ -174,26 +174,20 @@ def check_results(score):
     #Check results depending on score and print them.
     
     if score >= -3 and score <= 3:
-        print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly AMBIVERT, ") 
-        print(Fore.RED + Back.WHITE + "exhibit qualities of both introversion and extroversion,") 
-        print(Fore.RED + Back.WHITE + "you can flip into either depending on their mood, context, and goals.")
+        print(Fore.WHITE + Back.BLUE + " Congratulations! You finished the test. You are mostly AMBIVERT, \n exhibit qualities of both introversion and extroversion,\n you can flip into either depending on their mood, context, and goals.") 
         print(Style.RESET_ALL) 
     elif score < -3:
-        print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly INTROVERT,") 
-        print(Fore.RED + Back.WHITE + "you enjoy spending time alone and you feel more comfortable ") 
-        print(Fore.RED + Back.WHITE + "focusing on your inner thoughts and ideas.") 
+        print(Fore.WHITE + Back.BLUE + " Congratulations! You finished the test. You are mostly INTROVERT, \n you enjoy spending time alone and you feel more comfortable \n focusing on your inner thoughts and ideas. ") 
         print(Style.RESET_ALL)
     elif score > 3:
-        print(Fore.RED + Back.WHITE + "Congratulations! You finished the test. You are mostly EXTROVERT,") 
-        print(Fore.RED + Back.WHITE + "you enjoy being around other people and you gain energy from them.") 
+        print(Fore.WHITE + Back.BLUE + " Congratulations! You finished the test. You are mostly EXTROVERT, \n you enjoy being around other people and you gain energy from them.") 
         print(Style.RESET_ALL)
         
-    
-              
+  
 def load_from_workbook(test_sheet):
     # open worksheet
     try:
-        wb2 = load_workbook('C:/My websites/Project_3_Test/test_e_i.xlsx')                     
+        wb2 = load_workbook('test_e_i.xlsx')                     
     except FileNotFoundError as fnf_error:
         print(Fore.WHITE + Back.RED + fnf_error)
     else:
