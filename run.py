@@ -18,7 +18,20 @@ class QuestionsAnswers:
         self.answers = answers
         self.question_used = question_used
 
+def check_data_workbook():
+    # open worksheet
+    try:
+        wb2 = load_workbook('test_e_i.xlsx')                     
+    except FileNotFoundError as fnf_error:
+        print(Fore.WHITE + Back.RED + fnf_error)
+    else:
+        ws = wb2["Users"]
 
+    for column in ws.iter_cols():        
+       for cell in column:           
+        print(cell.value)   
+    
+check_data_workbook()  
 
 # print(Fore.RED + Back.YELLOW  + "Welcome to Extroversion Introversion Test")
 cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
@@ -93,13 +106,14 @@ def insert_user_data(name_in, email_in):
             mycell_e.value= email_in
             # print(email_in)            
             wb2.save('test_e_i.xlsx')
-        check_data_workbook()  
+         
  
 
 def start_test(name_tested):
     """
     Starting test, loading lists of questions 
     """
+    
     print(Fore.WHITE + Back.BLUE + f"\n Thank you, {name_tested}. Let's start.\n Are you oriented more towards \n the outer world or the inner world?\n ")    
     print(f" This easy test can give you a clear answer and help you understand \n your personality.\n ")
     print(f" Please enter Y for 'Yes' answer and N for 'No' answer. ")
@@ -232,20 +246,7 @@ def load_from_workbook(test_sheet):
     # return populated list 
     return list 
 
-def check_data_workbook():
-    # open worksheet
-    try:
-        wb2 = load_workbook('test_e_i.xlsx')                     
-    except FileNotFoundError as fnf_error:
-        print(Fore.WHITE + Back.RED + fnf_error)
-    else:
-        ws = wb2["Users"]
-
-    for column in ws.iter_cols():        
-       for cell in column:           
-        print(cell.value)   
-    
-                                
+                               
 
 
 check_data() 
