@@ -5,9 +5,18 @@ from colorama import init
 from termcolor import colored, cprint
 import re
 
-just_fix_windows_console()
-# init(autoreset=True)
+EXCEL_SHEET_NAME = 'test_e_i.xlsx'
+BANNER = """                                                      
+.---..   ..---..--.  .--.   --.--.   ..---..--.  .--.   .---..---..-..---.
+|     \ /   |  |   ):    :    |  |\  |  |  |   ):    :    |  |   (   ) |  
+|---   /    |  |--' |    |    |  | \ |  |  |--' |    |    |  |--- `-.  |  
+|     / \   |  |  \ :    ;    |  |  \|  |  |  \ :    ;    |  |   (   ) |  
+'---''   '  '  '   ` `--'   --'--'   '  '  '   ` `--'     '  '---'`-'  '  
+                                                                                                                                                             
+"""
 
+just_fix_windows_console()
+init(autoreset=True)
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 # Class for the questions and answer key instances and used question flag
@@ -19,11 +28,14 @@ class QuestionsAnswers:
         self.question_used = question_used
 
 def check_data_workbook():
-    # open worksheet
+    """
+    Check if user's data is already in the worksheet.
+    If yes, print user's last test result.
+    """
     try:
-        wb2 = load_workbook('test_e_i.xlsx')                     
+        wb2 = load_workbook(EXCEL_SHEET_NAME)                     
     except FileNotFoundError as fnf_error:
-        print(Fore.WHITE + Back.RED + fnf_error)
+        print(Fore.RED + Style.BRIGHT + fnf_error)
     else:
         ws = wb2["Users"]
 
@@ -31,30 +43,30 @@ def check_data_workbook():
        for cell in column:           
         print(cell.value)   
     
-check_data_workbook()  
 
-# print(Fore.RED + Back.YELLOW  + "Welcome to Extroversion Introversion Test")
-cprint(" Welcome to Extroversion Introversion Test! ", "white", "on_blue")
+print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
+
+
 
 def check_data():
 
     # Check input for valid user's name and e-mail. If yes call start_test function.
 
     while True:
-        name = input("\n Please enter your name:\n")
+        name = input("\nPlease enter your name:\n")
         name_valid = validate_name(name)        
         
         if name_valid:
-            cprint(f"\n Hello, {name}!", "white", "on_blue")            
+            print(Fore.GREEN + Style.BRIGHT + f"\nHello, {name}!")            
             while True:
-                email_str = input("\n Please enter your email: \n")                
+                email_str = input("\nPlease enter your email: \n")                
                 if validate_email(email_str):
                     insert_user_data(name, email_str) 
                     start_test(name) 
                     break
             break            
         else:
-            cprint(f" Invalid data, please try again.\n", "white", "on_red")          
+            print(Fore.RED + Style.BRIGHT + " ❌ Invalid data, please try again.\n")        
     
             
        
@@ -68,8 +80,8 @@ def validate_name(name_val):
     if name_check.isalpha() and len(name_check) > 1 :         
         return True  
     else:        
-        cprint(f" Invalid name {name_val}... Please enter correct name", "white", "on_red")        
-        print("\n")
+        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid name {name_val}... Please enter correct name")        
+        print("\n")        
         return False  
     
 
@@ -82,30 +94,26 @@ def validate_email(email_val):
         return True    
         
     else:        
-        cprint(f" Invalid e-mail {email_val}... Please enter correct e-mail", "white", "on_red")       
+        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_val}... Please enter correct e-mail")       
         return False 
     
 def insert_user_data(name_in, email_in):
     # open worksheet
     try:
-        wb2 = load_workbook('test_e_i.xlsx')                     
+        wb2 = load_workbook(EXCEL_SHEET_NAME)                     
     except FileNotFoundError as fnf_error:
-        print(Fore.WHITE + Back.RED + fnf_error)
+        print(Fore.RED  + fnf_error)
     else:
         ws = wb2["Users"]     
 
     for column in ws.iter_cols(min_row=2):         
-        # print(column)        
-        #column_name = column[0].value 
-        #print(column_name)      
-        # if column_name == "Name":             
         for c in column:               
             mycell_n = ws.cell(row=2, column=1)
             mycell_n.value= name_in
             mycell_e = ws.cell(row=2, column=2)
             mycell_e.value= email_in
             # print(email_in)            
-            wb2.save('test_e_i.xlsx')
+            wb2.save(EXCEL_SHEET_NAME)
          
  
 
@@ -113,11 +121,13 @@ def start_test(name_tested):
     """
     Starting test, loading lists of questions 
     """
-    
-    print(Fore.WHITE + Back.BLUE + f"\n Thank you, {name_tested}. Let's start.\n Are you oriented more towards \n the outer world or the inner world?\n ")    
-    print(f" This easy test can give you a clear answer and help you understand \n your personality.\n ")
-    print(f" Please enter Y for 'Yes' answer and N for 'No' answer. ")
-    print(Style.RESET_ALL)
+    check_data_workbook() 
+
+    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    print(Fore.GREEN + f"Welcome, {name_tested} 🙂 Let's start. 🚀\nAre you oriented more towards \nthe outer world or the inner world? 🤔\n ")    
+    print(Fore.GREEN + f"This easy test can give you a clear answer and help you understand \nyour personality.🧑\n ")
+    print(Fore.GREEN + Style.BRIGHT + f"Please enter Y for 'YES' answer or N for 'NO' answer. Enter Q to Quit")
+    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - \n")    
 
     list_t_normal = load_from_workbook("Test1")
     list_t_intra = load_from_workbook("Test2")
@@ -155,17 +165,17 @@ def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_
     if inner_score > -3 and inner_score < 3:
         for i in range(len(list_test_normal)):
             if list_test_normal[i].question_used == 0:
-                print(inner_score)                               
+                #print(inner_score)                               
                 return list_test_normal[i]
     elif inner_score <= -3:
         for i in range(len(list_test_intra)):
             if list_test_intra[i].question_used == 0:
-                print(inner_score)                                
+                #print(inner_score)                                
                 return list_test_intra[i]
     elif inner_score >= 3:
         for i in range(len(list_test_extra)):
             if list_test_extra[i].question_used == 0:
-                print(inner_score)                                
+                #print(inner_score)                                
                 return list_test_extra[i]
     check_results(inner_score)
     return None
@@ -184,12 +194,10 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
 
             if test_item == None:                
                 break 
-            key_answer = test_item.answers                                     
-            
-            print(Fore.WHITE + Back.BLUE + f"\n {test_item.questions}")        
-            print(Style.RESET_ALL)                
+            key_answer = test_item.answers 
 
-            user_answer = input(" Y/N ?\n")                      
+            print(Fore.YELLOW + f" {test_item.questions}  Enter  Y / N , Q to Quit") 
+            user_answer = input("🔻\n")                      
            
             if user_answer.lower() == "q":                
                 break 
@@ -206,7 +214,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
                 score += 1               
                 test_item.question_used = 1               
             else:
-                cprint(f" Invalid data... Please enter  Y/N or Q to Quit ", "white", "on_red")          
+                cprint(f"❌ Invalid data... Please enter  Y / N or Q to Quit ", "red")          
     
 def check_results(score):
     
@@ -226,7 +234,7 @@ def check_results(score):
 def load_from_workbook(test_sheet):
     # open worksheet
     try:
-        wb2 = load_workbook('test_e_i.xlsx')                     
+        wb2 = load_workbook(EXCEL_SHEET_NAME)                     
     except FileNotFoundError as fnf_error:
         print(Fore.WHITE + Back.RED + fnf_error)
     else:
