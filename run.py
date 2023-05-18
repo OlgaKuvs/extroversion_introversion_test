@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 from colorama import just_fix_windows_console
 from colorama import Fore, Back, Style
 from colorama import init
-from termcolor import colored, cprint
+import os
 import re
 
 EXCEL_SHEET_NAME = 'test_e_i.xlsx'
@@ -14,10 +14,27 @@ BANNER = """
 '---''   '  '  '   ` `--'   --'--'   '  '  '   ` `--'     '  '---'`-'  '  
                                                                                                                                                              
 """
+THANK_YOU = """                                              
+                                               
+.---..   .    .    .   ..   .  .   ..--. .   ..
+  |  |   |   / \   |\  ||  /    \ /:    :|   ||
+  |  |---|  /___\  | \ ||-'      : |    ||   ||
+  |  |   | /     \ |  \||  \     | :    ;:   ;'
+  '  '   ''       `'   ''   `    '  `--'  `-' o
+                                               
+                                               
+"""
 
 just_fix_windows_console()
 init(autoreset=True)
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+cursor_shape = '\x1b[3 q'
+print(cursor_shape, end='')
+
+def clear():
+    cls = lambda: os.system('cls')
+    cls()
+    
 
 # Class for the questions and answer key instances and used question flag
 
@@ -41,11 +58,10 @@ def check_data_workbook():
 
     for column in ws.iter_cols():        
        for cell in column:           
-        print(cell.value)   
+         return cell.value  
     
 
 print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
-
 
 
 def check_data():
@@ -62,9 +78,14 @@ def check_data():
                 email_str = input("\nPlease enter your email: \n")                
                 if validate_email(email_str):
                     insert_user_data(name, email_str) 
-                    start_test(name) 
-                    break
-            break            
+                    while True:
+                        clear()                        
+                        start_test(name)
+                        result = finish_test()
+                        if result  == False:
+                            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+                            exit()
+                break            
         else:
             print(Fore.RED + Style.BRIGHT + " ❌ Invalid data, please try again.\n")        
     
@@ -169,13 +190,11 @@ def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_
                 return list_test_normal[i]
     elif inner_score <= -3:
         for i in range(len(list_test_intra)):
-            if list_test_intra[i].question_used == 0:
-                #print(inner_score)                                
+            if list_test_intra[i].question_used == 0:                                               
                 return list_test_intra[i]
     elif inner_score >= 3:
         for i in range(len(list_test_extra)):
-            if list_test_extra[i].question_used == 0:
-                #print(inner_score)                                
+            if list_test_extra[i].question_used == 0:                                              
                 return list_test_extra[i]
     check_results(inner_score)
     return None
@@ -196,11 +215,12 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
                 break 
             key_answer = test_item.answers 
 
-            print(Fore.YELLOW + f" {test_item.questions}  Enter  Y / N , Q to Quit") 
-            user_answer = input("🔻\n")                      
+            print(Fore.YELLOW + f" {test_item.questions}  Enter  Y / N , Q to Quit")             
+            user_answer = input("🔻\n")                               
            
-            if user_answer.lower() == "q":                
-                break 
+            if user_answer.lower() == "q":
+                print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)                
+                exit() 
             elif (user_answer.lower() == "y" and key_answer == 1) :       
                 score += 1               
                 test_item.question_used = 1      
@@ -214,21 +234,41 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
                 score += 1               
                 test_item.question_used = 1               
             else:
-                cprint(f"❌ Invalid data... Please enter  Y / N or Q to Quit ", "red")          
+                print(Fore.RED + f"❌ Invalid data... Please enter  Y / N or Q to Quit ")          
     
-def check_results(score):
+def check_results(score):     
     
     #Check results depending on score and print them.
     
+    clear()
+
+    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     if score >= -3 and score <= 3:
-        print(Fore.WHITE + Back.BLUE + " Congratulations! You finished the test. You are mostly AMBIVERT, \n exhibit qualities of both introversion and extroversion,\n you can flip into either depending on their mood, context, and goals.") 
-        print(Style.RESET_ALL) 
+        
+        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly AMBIVERT, \nexhibit qualities of both introversion and extroversion,\nyou can flip into either depending on their mood, context and goals.") 
+        
     elif score < -3:
-        print(Fore.WHITE + Back.BLUE + " Congratulations! You finished the test. You are mostly INTROVERT, \n you enjoy spending time alone and you feel more comfortable \n focusing on your inner thoughts and ideas. ") 
-        print(Style.RESET_ALL)
+        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\n You are mostly INTROVERT, \nyou enjoy spending time alone and you feel more comfortable \nfocusing on your inner thoughts and ideas. ") 
+        
     elif score > 3:
-        print(Fore.WHITE + Back.BLUE + " Congratulations! You finished the test. You are mostly EXTROVERT, \n you enjoy being around other people and you gain energy from them.") 
-        print(Style.RESET_ALL)
+        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\n You are mostly EXTROVERT, \nyou enjoy being around other people and you gain energy from them.")
+    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+
+def finish_test():    
+            
+    print(Fore.YELLOW + "\nWould you like to try the test again?")
+
+    while True:
+        repeat_test = input("Enter Y or N\n")
+
+        if repeat_test.lower() == "y":
+            clear()
+            return True            
+        elif repeat_test.lower() == "n":
+            clear()
+            return False  
+        else:
+            print(Fore.RED + f" ❌ Invalid data... Please enter Y or N")           
         
   
 def load_from_workbook(test_sheet):
@@ -252,10 +292,7 @@ def load_from_workbook(test_sheet):
         list.append(QuestionsAnswers(a, n, 0)) 
     
     # return populated list 
-    return list 
-
-                               
-
+    return list                            
 
 check_data() 
 
