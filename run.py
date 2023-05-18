@@ -32,10 +32,11 @@ def check_data():
         name_valid = validate_name(name)        
         
         if name_valid:
-            cprint(f"\n Hello, {name}!", "white", "on_blue") 
+            cprint(f"\n Hello, {name}!", "white", "on_blue")            
             while True:
                 email_str = input("\n Please enter your email: \n")                
                 if validate_email(email_str):
+                    insert_user_data(name, email_str) 
                     start_test(name) 
                     break
             break            
@@ -70,6 +71,34 @@ def validate_email(email_val):
     else:        
         cprint(f" Invalid e-mail {email_val}... Please enter correct e-mail", "white", "on_red")       
         return False 
+    
+def insert_user_data(name_in, email_in):
+    # open worksheet
+    try:
+        wb2 = load_workbook('test_e_i.xlsx')                     
+    except FileNotFoundError as fnf_error:
+        print(Fore.WHITE + Back.RED + fnf_error)
+    else:
+        ws = wb2["Users"]     
+
+    for column in ws.iter_cols(min_row=2):         
+        # print(column)        
+        #column_name = column[0].value 
+        #print(column_name)      
+        # if column_name == "Name":             
+        for c in column:               
+            mycell_n = ws.cell(row=2, column=1)
+            mycell_n.value= name_in
+            mycell_e = ws.cell(row=2, column=2)
+            mycell_e.value= email_in
+            # print(email_in)            
+            wb2.save('test_e_i.xlsx')       
+        
+    
+           
+
+
+
 
 def start_test(name_tested):
     """
