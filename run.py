@@ -44,7 +44,7 @@ class QuestionsAnswers:
         self.answers = answers
         self.question_used = question_used
 
-def check_data_workbook():
+def check_data_workbook(name_used, email_used):
     """
     Check if user's data is already in the worksheet.
     If yes, print user's last test result.
@@ -55,10 +55,14 @@ def check_data_workbook():
         print(Fore.RED + Style.BRIGHT + fnf_error)
     else:
         ws = wb2["Users"]
+    
+        row_count = ws.max_row               
+        for i in range(1, row_count+1):
+           if ws.cell(row=i, column=1).value == name_used and ws.cell(row=i, column=2).value == email_used:
+               result = ws.cell(row=i, column=3).value
+               print(f"Welcome again {name_used}! Your last test result was {result}. ")
+               finish_test()
 
-    for column in ws.iter_cols():        
-       for cell in column:           
-         return cell.value  
     
 
 print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
@@ -78,9 +82,10 @@ def check_data():
                 email_str = input("\nPlease enter your email: \n")                
                 if validate_email(email_str):
                     insert_user_data(name, email_str) 
+                    break
                     while True:
-                        clear()                        
-                        start_test(name)
+                        #clear()                        
+                        start_test(name, email_str)
                         result = finish_test()
                         if result  == False:
                             print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
@@ -101,7 +106,7 @@ def validate_name(name_val):
     if name_check.isalpha() and len(name_check) > 1 :         
         return True  
     else:        
-        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid name {name_val}... Please enter correct name")        
+        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid name {name_val}... Please enter correct name\n")        
         print("\n")        
         return False  
     
@@ -115,7 +120,7 @@ def validate_email(email_val):
         return True    
         
     else:        
-        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_val}... Please enter correct e-mail")       
+        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_val}... Please enter correct e-mail\n")       
         return False 
     
 def insert_user_data(name_in, email_in):
@@ -125,24 +130,20 @@ def insert_user_data(name_in, email_in):
     except FileNotFoundError as fnf_error:
         print(Fore.RED  + fnf_error)
     else:
-        ws = wb2["Users"]     
+        ws = wb2["Users"] 
 
-    for column in ws.iter_cols(min_row=2):         
-        for c in column:               
-            mycell_n = ws.cell(row=2, column=1)
-            mycell_n.value= name_in
-            mycell_e = ws.cell(row=2, column=2)
-            mycell_e.value= email_in
-            # print(email_in)            
-            wb2.save(EXCEL_SHEET_NAME)
-         
+    # find first empty row and insert data
+    row = ws.max_row + 1    
+    ws.cell(row=row, column=1).value = name_in
+    ws.cell(row=row, column=2).value = email_in              
+    wb2.save(EXCEL_SHEET_NAME)         
  
 
-def start_test(name_tested):
+def start_test(name_tested, email_tested):
     """
     Starting test, loading lists of questions 
     """
-    check_data_workbook() 
+    check_data_workbook(name_tested, email_tested) 
 
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print(Fore.GREEN + f"Welcome, {name_tested} 🙂 Let's start. 🚀\nAre you oriented more towards \nthe outer world or the inner world? 🤔\n ")    
@@ -234,7 +235,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
                 score += 1               
                 test_item.question_used = 1               
             else:
-                print(Fore.RED + f"❌ Invalid data... Please enter  Y / N or Q to Quit ")          
+                print(Fore.RED + f"❌ Invalid data... Please enter  Y / N or Q to Quit \n")          
     
 def check_results(score):     
     
@@ -248,10 +249,10 @@ def check_results(score):
         print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly AMBIVERT, \nexhibit qualities of both introversion and extroversion,\nyou can flip into either depending on their mood, context and goals.") 
         
     elif score < -3:
-        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\n You are mostly INTROVERT, \nyou enjoy spending time alone and you feel more comfortable \nfocusing on your inner thoughts and ideas. ") 
+        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly INTROVERT, \nyou enjoy spending time alone and you feel more comfortable \nfocusing on your inner thoughts and ideas. ") 
         
     elif score > 3:
-        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\n You are mostly EXTROVERT, \nyou enjoy being around other people and you gain energy from them.")
+        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly EXTROVERT, \nyou enjoy being around other people and you gain energy from them.")
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
 def finish_test():    
@@ -268,7 +269,7 @@ def finish_test():
             clear()
             return False  
         else:
-            print(Fore.RED + f" ❌ Invalid data... Please enter Y or N")           
+            print(Fore.RED + f" ❌ Invalid data... Please enter Y or N \n")           
         
   
 def load_from_workbook(test_sheet):
