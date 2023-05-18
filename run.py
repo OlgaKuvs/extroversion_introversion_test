@@ -55,13 +55,15 @@ def check_data_workbook(name_used, email_used):
         print(Fore.RED + Style.BRIGHT + fnf_error)
     else:
         ws = wb2["Users"]
-    
+        
+    """
         row_count = ws.max_row               
         for i in range(1, row_count+1):
            if ws.cell(row=i, column=1).value == name_used and ws.cell(row=i, column=2).value == email_used:
                result = ws.cell(row=i, column=3).value
                print(f"Welcome again {name_used}! Your last test result was {result}. ")
                finish_test()
+    """
 
     
 
@@ -82,9 +84,8 @@ def check_data():
                 email_str = input("\nPlease enter your email: \n")                
                 if validate_email(email_str):
                     insert_user_data(name, email_str) 
-                    break
                     while True:
-                        #clear()                        
+                        clear()                        
                         start_test(name, email_str)
                         result = finish_test()
                         if result  == False:
