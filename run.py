@@ -92,13 +92,9 @@ def insert_user_data(name_in, email_in):
             mycell_e = ws.cell(row=2, column=2)
             mycell_e.value= email_in
             # print(email_in)            
-            wb2.save('test_e_i.xlsx')       
-        
-    
-           
-
-
-
+            wb2.save('test_e_i.xlsx')
+        check_data_workbook()  
+ 
 
 def start_test(name_tested):
     """
@@ -234,7 +230,22 @@ def load_from_workbook(test_sheet):
         list.append(QuestionsAnswers(a, n, 0)) 
     
     # return populated list 
-    return list               
+    return list 
+
+def check_data_workbook():
+    # open worksheet
+    try:
+        wb2 = load_workbook('test_e_i.xlsx')                     
+    except FileNotFoundError as fnf_error:
+        print(Fore.WHITE + Back.RED + fnf_error)
+    else:
+        ws = wb2["Users"]
+
+    for column in ws.iter_cols():        
+       for cell in column:           
+        print(cell.value)   
+    
+                                
 
 
 check_data() 
