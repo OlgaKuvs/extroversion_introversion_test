@@ -32,9 +32,9 @@ cursor_shape = '\x1b[3 q'
 print(cursor_shape, end='')
 
 def clear():
-    # clear = lambda: os.system('cls')
-    os.system('clear')
-    # clear()
+    clear = lambda: os.system('clear')
+    # os.system('c')
+    clear()
     
 
 # Class for the questions and answer key instances and used question flag
