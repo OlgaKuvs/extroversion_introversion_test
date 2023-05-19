@@ -32,7 +32,7 @@ cursor_shape = '\x1b[3 q'
 print(cursor_shape, end='')
 
 def clear():
-    clear = lambda: os.system('cls')
+    # clear = lambda: os.system('cls')
     os.system('clear')
     clear()
     
