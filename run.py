@@ -63,24 +63,8 @@ def check_data_workbook(name_used, email_used):
             email = row[1].value           
             if name == name_used and email == email_used:
                 print(f"Welcome again {name_used}! Your email is {email_used} ")
-                finish_test()
-                
+                finish_test()              
 
-        
-""" 
-        result=[]
-        for row in ws.iter_rows():
-            for cell in row:
-                result.append(cell.value)
-                print(result) 
- 
-        if ws.cell(row=i, column=1).value == name_used and ws.cell(row=i, column=2).value == email_used:
-            result = ws.cell(row=i, column=3).value
-            print(f"Welcome again {name_used}! Your last test result was {result}. ")
-            finish_test()
-        """
-
-    
 
 print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
 
@@ -98,14 +82,10 @@ def check_data():
             while True:
                 email_str = input("\nPlease enter your email: \n")                
                 if validate_email(email_str):
-                    insert_user_data(name, email_str) 
+                    #insert_user_data(name, email_str) 
                     while True:
                         clear()                        
-                        start_test(name, email_str)
-                        result = finish_test()
-                        if result  == False:
-                            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-                            exit()
+                        start_test(name, email_str)                        
                     break            
         else:
             print(Fore.RED + Style.BRIGHT + " ❌ Invalid data, please try again.\n")        
@@ -137,22 +117,8 @@ def validate_email(email_val):
         
     else:        
         print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_val}... Please enter correct e-mail\n")       
-        return False 
-    
-def insert_user_data(name_in, email_in):
-    # open worksheet
-    try:
-        wb2 = load_workbook(EXCEL_SHEET_NAME)                     
-    except FileNotFoundError as fnf_error:
-        print(Fore.RED  + fnf_error)
-    else:
-        ws = wb2["Users"] 
-
-    # find first empty row and insert data
-    row = ws.max_row + 1    
-    ws.cell(row=row, column=1).value = name_in
-    ws.cell(row=row, column=2).value = email_in              
-    wb2.save(EXCEL_SHEET_NAME)         
+        return False   
+      
  
 
 def start_test(name_tested, email_tested):
@@ -171,7 +137,36 @@ def start_test(name_tested, email_tested):
     list_t_intra = load_from_workbook("Test2")
     list_t_extra = load_from_workbook("Test3")
        
-    check_answers(list_t_normal, list_t_intra, list_t_extra)
+    final_score = check_answers(list_t_normal, list_t_intra, list_t_extra)
+
+    check_results(final_score)
+
+    insert_user_data(name_tested, email_tested, final_score)
+
+    print(name_tested, email_tested, final_score)
+
+    result = finish_test()
+    if result  == False:
+        print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+        exit()
+
+
+def insert_user_data(name_in, email_in, result_in):
+    # open worksheet
+    try:
+        wb2 = load_workbook(EXCEL_SHEET_NAME)                     
+    except FileNotFoundError as fnf_error:
+        print(Fore.RED  + fnf_error)
+    else:
+        ws = wb2["Users"] 
+
+    # find first empty row and insert data
+    row = ws.max_row + 1    
+    ws.cell(row=row, column=1).value = name_in
+    ws.cell(row=row, column=2).value = email_in
+    ws.cell(row=row, column=3).value = result_in                
+    wb2.save(EXCEL_SHEET_NAME)   
+
 
 def list_questions(worksheet):
     # Get column of the questions from worksheet to the list
@@ -213,7 +208,6 @@ def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_
         for i in range(len(list_test_extra)):
             if list_test_extra[i].question_used == 0:                                              
                 return list_test_extra[i]
-    check_results(inner_score)
     return None
 
 
@@ -229,7 +223,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
             test_item = get_next_question(score, list_test_normal, list_test_intra, list_test_extra)            
 
             if test_item == None:                
-                break 
+                return score
             key_answer = test_item.answers 
 
             print(Fore.YELLOW + f" {test_item.questions}  Enter  Y / N , Q to Quit")             
