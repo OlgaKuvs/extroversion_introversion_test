@@ -33,7 +33,8 @@ print(cursor_shape, end='')
 
 def clear():
     clear = lambda: os.system('clear')
-    # os.system('c')
+    clear = lambda: os.system('cls')
+    # os.system('clear')
     clear()
     
 
@@ -56,15 +57,21 @@ def check_data_workbook(name_used, email_used):
         print(Fore.RED + Style.BRIGHT + fnf_error)
     else:
         ws = wb2["Users"]
-        
-    """
-        row_count = ws.max_row               
+
+        row_count = ws.max_row 
+       
         for i in range(1, row_count+1):
-           if ws.cell(row=i, column=1).value == name_used and ws.cell(row=i, column=2).value == email_used:
-               result = ws.cell(row=i, column=3).value
-               print(f"Welcome again {name_used}! Your last test result was {result}. ")
-               finish_test()
-    """
+            row=ws.cell[i]
+            print(ws.cell[i])  
+        
+    
+      
+        """ 
+        if ws.cell(row=i, column=1).value == name_used and ws.cell(row=i, column=2).value == email_used:
+            result = ws.cell(row=i, column=3).value
+            print(f"Welcome again {name_used}! Your last test result was {result}. ")
+            finish_test()
+        """
 
     
 
