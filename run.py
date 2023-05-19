@@ -58,15 +58,22 @@ def check_data_workbook(name_used, email_used):
     else:
         ws = wb2["Users"]
 
-        row_count = ws.max_row 
-       
-        for i in range(1, row_count+1):
-            row=ws.cell[i]
-            print(ws.cell[i])  
+        for row in ws:
+            name = row[0].value
+            email = row[1].value           
+            if name == name_used and email == email_used:
+                print(f"Welcome again {name_used}! Your email is {email_used} ")
+                finish_test()
+                
+
         
-    
-      
-        """ 
+""" 
+        result=[]
+        for row in ws.iter_rows():
+            for cell in row:
+                result.append(cell.value)
+                print(result) 
+ 
         if ws.cell(row=i, column=1).value == name_used and ws.cell(row=i, column=2).value == email_used:
             result = ws.cell(row=i, column=3).value
             print(f"Welcome again {name_used}! Your last test result was {result}. ")
@@ -99,7 +106,7 @@ def check_data():
                         if result  == False:
                             print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
                             exit()
-                break            
+                    break            
         else:
             print(Fore.RED + Style.BRIGHT + " ❌ Invalid data, please try again.\n")        
     
