@@ -34,7 +34,7 @@ print(cursor_shape, end='')
 def clear():
     # clear = lambda: os.system('cls')
     os.system('clear')
-    clear()
+    # clear()
     
 
 # Class for the questions and answer key instances and used question flag
