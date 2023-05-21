@@ -66,10 +66,16 @@ def check_data_workbook(name_used, email_used):
 
         for row in ws:
             name = row[0].value
-            email = row[1].value           
+            email = row[1].value 
+            result = row[2].value           
             if name == name_used and email == email_used:
-                print(f"Welcome again {name_used}! Your email is {email_used} ")
-                finish_test()              
+                if result > -3 and result < 3:
+                    print(f"Welcome again {name_used}! Your last result was mostly AMBIVERT")
+                elif result <= -3:
+                    print(f"Welcome again {name_used}! Your last result was mostly INTROVERT")
+                elif result >= 3:
+                    print(f"Welcome again {name_used}! Your last result was mostly EXTROVERT")                
+                return True            
 
 
 print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
@@ -131,30 +137,35 @@ def start_test(name_tested, email_tested):
     """
     Starting test, loading lists of questions 
     """
-    check_data_workbook(name_tested, email_tested) 
+    check_user = check_data_workbook(name_tested, email_tested)
+    if check_user:
+        result = finish_test()
+        if result  == False:
+            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+            exit()
+        else:  
+            print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+            print(Fore.GREEN + f"Welcome, {name_tested} 🙂 Let's start. 🚀\nAre you oriented more towards \nthe outer world or the inner world? 🤔\n ")    
+            print(Fore.GREEN + f"This easy test can give you a clear answer and help you understand \nyour personality.🧑\n ")
+            print(Fore.GREEN + Style.BRIGHT + f"Please enter Y for 'YES' answer or N for 'NO' answer. Enter Q to Quit")
+            print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - \n")    
 
-    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-    print(Fore.GREEN + f"Welcome, {name_tested} 🙂 Let's start. 🚀\nAre you oriented more towards \nthe outer world or the inner world? 🤔\n ")    
-    print(Fore.GREEN + f"This easy test can give you a clear answer and help you understand \nyour personality.🧑\n ")
-    print(Fore.GREEN + Style.BRIGHT + f"Please enter Y for 'YES' answer or N for 'NO' answer. Enter Q to Quit")
-    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - \n")    
+            list_t_normal = load_from_workbook("Test1")
+            list_t_intra = load_from_workbook("Test2")
+            list_t_extra = load_from_workbook("Test3")
+            
+            final_score = check_answers(list_t_normal, list_t_intra, list_t_extra)
 
-    list_t_normal = load_from_workbook("Test1")
-    list_t_intra = load_from_workbook("Test2")
-    list_t_extra = load_from_workbook("Test3")
-       
-    final_score = check_answers(list_t_normal, list_t_intra, list_t_extra)
+            check_results(final_score)
 
-    check_results(final_score)
+            insert_user_data(name_tested, email_tested, final_score)
 
-    insert_user_data(name_tested, email_tested, final_score)
+            print(name_tested, email_tested, final_score)
 
-    print(name_tested, email_tested, final_score)
-
-    result = finish_test()
-    if result  == False:
-        print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-        exit()
+            result = finish_test()
+            if result  == False:
+                print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+                exit()
 
 
 def insert_user_data(name_in, email_in, result_in):
