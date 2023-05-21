@@ -136,10 +136,11 @@ def validate_email(email_val):
 def start_test(name_tested, email_tested):
     """
     Starting test, loading lists of questions 
-    """
-    user_exists = check_data_workbook(name_tested, email_tested)
+    """    
+    user_exists = check_data_workbook(name_tested, email_tested)  
 
-    while True:    
+    while True: 
+         
         result = finish_test(user_exists)
 
         if result:   
@@ -157,7 +158,9 @@ def start_test(name_tested, email_tested):
 
             check_results(final_score)
 
-            insert_user_data(name_tested, email_tested, final_score)          
+            insert_user_data(name_tested, email_tested, final_score)
+            user_exists = True      
+                
         else:
             print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
             exit()
@@ -173,18 +176,19 @@ def insert_user_data(name_in, email_in, result_in):
         ws = wb2["Users"] 
 
     # find if user exists and overwrite test result
-    row = ws.max_row + 1     
+    row = ws.max_row + 1 
+    user_found = 0    
     for i in range(1,row):
         s = str(ws.cell(i,1).value)
         e = str(ws.cell(i,2).value)
         if s.lower() == name_in.lower() and e == email_in:
             ws.cell(i,3).value = result_in
             user_found = i
-        # find first empty row and insert data
-    if not user_found:
-        ws.cell(row=row, column=1).value = name_in
-        ws.cell(row=row, column=2).value = email_in
-        ws.cell(row=row, column=3).value = result_in                  
+        # insert data to the find first empty row
+        elif user_found != i:
+            ws.cell(row=row, column=1).value = name_in
+            ws.cell(row=row, column=2).value = email_in
+            ws.cell(row=row, column=3).value = result_in                  
     wb2.save(EXCEL_SHEET_NAME) 
 
 
@@ -287,8 +291,7 @@ def check_results(score):
 
 def finish_test(user_is): 
 
-    if not user_is:
-        print("new user")
+    if not user_is:        
         return True
     else:
         print(Fore.YELLOW + "\nWould you like to try the test again?")
