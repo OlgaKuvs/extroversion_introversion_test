@@ -68,7 +68,7 @@ def check_data_workbook(name_used, email_used):
             name = row[0].value
             email = row[1].value 
             result = row[2].value           
-            if name == name_used and email == email_used:
+            if name.lower() == name_used.lower() and email == email_used:
                 if result > -3 and result < 3:
                     print(f"Welcome again {name_used}! Your last result was mostly AMBIVERT")
                 elif result <= -3:
@@ -137,13 +137,12 @@ def start_test(name_tested, email_tested):
     """
     Starting test, loading lists of questions 
     """
-    check_user = check_data_workbook(name_tested, email_tested)
-    if check_user:
-        result = finish_test()
-        if result  == False:
-            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-            exit()
-        else:  
+    user_exists = check_data_workbook(name_tested, email_tested)
+
+    while True:    
+        result = finish_test(user_exists)
+
+        if result:   
             print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
             print(Fore.GREEN + f"Welcome, {name_tested} 🙂 Let's start. 🚀\nAre you oriented more towards \nthe outer world or the inner world? 🤔\n ")    
             print(Fore.GREEN + f"This easy test can give you a clear answer and help you understand \nyour personality.🧑\n ")
@@ -158,14 +157,10 @@ def start_test(name_tested, email_tested):
 
             check_results(final_score)
 
-            insert_user_data(name_tested, email_tested, final_score)
-
-            print(name_tested, email_tested, final_score)
-
-            result = finish_test()
-            if result  == False:
-                print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-                exit()
+            insert_user_data(name_tested, email_tested, final_score)          
+        else:
+            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+            exit()
 
 
 def insert_user_data(name_in, email_in, result_in):
@@ -282,21 +277,25 @@ def check_results(score):
         print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly EXTROVERT, \nyou enjoy being around other people and you gain energy from them.")
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
-def finish_test():    
-            
-    print(Fore.YELLOW + "\nWould you like to try the test again?")
+def finish_test(user_is): 
 
-    while True:
-        repeat_test = input("Enter Y or N\n")
+    if not user_is:
+        print("new user")
+        return True
+    else:
+        print(Fore.YELLOW + "\nWould you like to try the test again?")
 
-        if repeat_test.lower() == "y":
-            clear()
-            return True            
-        elif repeat_test.lower() == "n":
-            clear()
-            return False  
-        else:
-            print(Fore.RED + f" ❌ Invalid data... Please enter Y or N \n")           
+        while True:
+            repeat_test = input("Enter Y or N\n")
+
+            if repeat_test.lower() == "y":
+                clear()
+                return True            
+            elif repeat_test.lower() == "n":
+                clear()
+                return False  
+            else:
+                print(Fore.RED + f" ❌ Invalid data... Please enter Y or N \n")           
         
   
 def load_from_workbook(test_sheet):
