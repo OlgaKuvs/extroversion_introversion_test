@@ -183,9 +183,9 @@ def insert_user_data(name_in, email_in, result_in):
         e = str(ws.cell(i,2).value)
         if s.lower() == name_in.lower() and e == email_in:
             ws.cell(i,3).value = result_in
-            user_found = i
+            user_found = row
         # insert data to the find first empty row
-        elif user_found != i:
+    if user_found != row:
             ws.cell(row=row, column=1).value = name_in
             ws.cell(row=row, column=2).value = email_in
             ws.cell(row=row, column=3).value = result_in                  
