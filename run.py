@@ -171,13 +171,25 @@ def insert_user_data(name_in, email_in, result_in):
         print(Fore.RED  + fnf_error)
     else:
         ws = wb2["Users"] 
+    
+    for i in range(1,ws.max_row+1):
+        s = str(ws.cell(i,1).value)
+        e = str(ws.cell(i,2).value)
+        if s.lower() == name_in.lower() and e == email_in:
+            ws.cell(i,3).value = result_in 
+    print(result_in)
+    wb2.save(EXCEL_SHEET_NAME) 
+
+                        
 
     # find first empty row and insert data
+    """ 
     row = ws.max_row + 1    
     ws.cell(row=row, column=1).value = name_in
     ws.cell(row=row, column=2).value = email_in
-    ws.cell(row=row, column=3).value = result_in                
-    wb2.save(EXCEL_SHEET_NAME)   
+    ws.cell(row=row, column=3).value = result_in                   
+    wb2.save(EXCEL_SHEET_NAME)  
+    """  
 
 
 def list_questions(worksheet):
