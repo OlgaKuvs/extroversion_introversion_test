@@ -3,7 +3,9 @@ from colorama import just_fix_windows_console
 from colorama import Fore, Back, Style
 from colorama import init
 import os
+import platform 
 import re
+
 
 EXCEL_SHEET_NAME = 'test_e_i.xlsx'
 BANNER = """                                                      
@@ -31,10 +33,14 @@ regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 cursor_shape = '\x1b[3 q'
 print(cursor_shape, end='')
 
+
 def clear():
-    clear = lambda: os.system('clear')
-    clear = lambda: os.system('cls')
-    # os.system('clear')
+    plt = platform.system()
+
+    if plt == "Windows":
+        clear = lambda: os.system('cls')
+    elif plt == "Linux":
+        clear = lambda: os.system('clear')    
     clear()
     
 
