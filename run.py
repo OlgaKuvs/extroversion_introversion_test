@@ -35,6 +35,7 @@ print(cursor_shape, end='')
 
 
 def clear():
+    # Check os and clear the terminal
     plt = platform.system()
 
     if plt == "Windows":
@@ -51,6 +52,8 @@ class QuestionsAnswers:
         self.questions = questions
         self.answers = answers
         self.question_used = question_used
+
+print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
 
 def check_data_workbook(name_used, email_used):
     """
@@ -78,29 +81,26 @@ def check_data_workbook(name_used, email_used):
                 return True            
 
 
-print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
-
-
 def check_data():
 
-    # Check input for valid user's name and e-mail. If yes call start_test function.
+    # Check input for user's name and e-mail validation. If valid, call start_test function.
 
     while True:
         name = input("\nPlease enter your name:\n")
         name_valid = validate_name(name)        
         
-        if name_valid:
-            print(Fore.GREEN + Style.BRIGHT + f"\nHello, {name}!")            
+        if name_valid:            
+            print(Fore.GREEN + Style.BRIGHT + f"\nHello, {name}!\n")            
             while True:
-                email_str = input("\nPlease enter your email: \n")                
+                email_str = input("Please enter your email: \n")                
                 if validate_email(email_str):
-                    #insert_user_data(name, email_str) 
                     while True:
                         clear()                        
                         start_test(name, email_str)                        
-                    break            
+                else:
+                    print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_str}... Please enter correct e-mail\n")  
         else:
-            print(Fore.RED + Style.BRIGHT + " ❌ Invalid data, please try again.\n")        
+            print(Fore.RED + Style.BRIGHT + f" ❌ Invalid name {name}... Please enter correct name\n")       
     
             
        
@@ -114,8 +114,8 @@ def validate_name(name_val):
     if name_check.isalpha() and len(name_check) > 1 :         
         return True  
     else:        
-        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid name {name_val}... Please enter correct name\n")        
-        print("\n")        
+        #print(Fore.RED + Style.BRIGHT + f" ❌ Invalid name {name_val}... Please enter correct name\n")        
+        # print("\n")        
         return False  
     
 
@@ -128,7 +128,7 @@ def validate_email(email_val):
         return True    
         
     else:        
-        print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_val}... Please enter correct e-mail\n")       
+        # print(Fore.RED + Style.BRIGHT + f" ❌ Invalid e-mail {email_val}... Please enter correct e-mail\n")       
         return False   
       
  
@@ -167,7 +167,7 @@ def start_test(name_tested, email_tested):
 
 
 def insert_user_data(name_in, email_in, result_in):
-    # open worksheet
+    # Open worksheet
     try:
         wb2 = load_workbook(EXCEL_SHEET_NAME)                     
     except FileNotFoundError as fnf_error:
@@ -175,7 +175,7 @@ def insert_user_data(name_in, email_in, result_in):
     else:
         ws = wb2["Users"] 
 
-    # find if user exists and overwrite test result
+    # Find if user exists and overwrite test result
     row = ws.max_row + 1 
     user_found = 0    
     for i in range(1,row):
@@ -184,7 +184,7 @@ def insert_user_data(name_in, email_in, result_in):
         if s.lower() == name_in.lower() and e == email_in:
             ws.cell(i,3).value = result_in
             user_found = row
-        # insert data to the find first empty row
+    # If new user insert data to the find first empty row
     if user_found != row:
             ws.cell(row=row, column=1).value = name_in
             ws.cell(row=row, column=2).value = email_in
@@ -214,15 +214,12 @@ def list_answers(worksheet):
             answers.pop(0)
             return answers       
 
-def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_extra):
-    """
-    Сhoose a category of questions depending on the score.
-
-    """     
+def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_extra):    
+    #Сhoose a category of questions depending on the score.
+        
     if inner_score > -3 and inner_score < 3:
         for i in range(len(list_test_normal)):
             if list_test_normal[i].question_used == 0:
-                #print(inner_score)                               
                 return list_test_normal[i]
     elif inner_score <= -3:
         for i in range(len(list_test_intra)):
@@ -289,7 +286,8 @@ def check_results(score):
         print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly EXTROVERT, \nyou enjoy being around other people and you gain energy from them.")
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
-def finish_test(user_is): 
+def finish_test(user_is):     
+    # Ask the user if they want to try the test again and get the result (yes or no)    
 
     if not user_is:        
         return True
