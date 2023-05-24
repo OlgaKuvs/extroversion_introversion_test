@@ -47,11 +47,12 @@ def clear():
 
 # Class for the questions and answer key instances and used question flag
 
-class QuestionsAnswers:
-    def __init__(self, questions, answers, question_used):
-        self.questions = questions
-        self.answers = answers
-        self.question_used = question_used
+class QuestionsAnswers:    
+    def __init__(self):
+        self.questions = ""
+        self.answers = ""
+        self.question_used = 0
+
 
 print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
 
@@ -67,8 +68,8 @@ def check_data_workbook(name_used, email_used):
     else:
         ws = wb2["Users"]
 
-        for row in ws:
-            name = row[0].value
+        for row in ws:                
+            name = str(row[0].value)
             email = row[1].value 
             result = row[2].value           
             if name.lower() == name_used.lower() and email == email_used:
@@ -189,30 +190,7 @@ def insert_user_data(name_in, email_in, result_in):
             ws.cell(row=row, column=1).value = name_in
             ws.cell(row=row, column=2).value = email_in
             ws.cell(row=row, column=3).value = result_in                  
-    wb2.save(EXCEL_SHEET_NAME) 
-
-
-def list_questions(worksheet):
-    # Get column of the questions from worksheet to the list
-    questions = []    
-    for column in worksheet.iter_cols():          
-        column_name = column[0].value
-        if column_name == "Questions":                     
-            for cell in column:
-               questions.append(cell.value)
-            questions.pop(0)
-            return questions 
-
-def list_answers(worksheet):
-    # Get column of the answer key from worksheet to the list
-    answers = [] 
-    for column in worksheet.iter_cols():          
-        column_name = column[0].value       
-        if column_name == "Answers":             
-            for cell in column:
-               answers.append(cell.value)
-            answers.pop(0)
-            return answers       
+    wb2.save(EXCEL_SHEET_NAME)      
 
 def get_next_question(inner_score, list_test_normal, list_test_intra, list_test_extra):    
     #Сhoose a category of questions depending on the score.
@@ -315,20 +293,19 @@ def load_from_workbook(test_sheet):
         print(Fore.WHITE + Back.RED + fnf_error)
     else:
         ws = wb2[test_sheet]
-    
-    # populate list of answer keys
-    answers = list_answers(ws)
 
-    # populate list of questions
-    questions = list_questions(ws)    
-
-    # populate list with object which contains questions and answer keys 
     list = [] 
-    for a, n in zip(questions, answers):               
-        list.append(QuestionsAnswers(a, n, 0)) 
-    
-    # return populated list 
-    return list                            
+    row = ws.max_row + 1 
+
+    # populate list with object which contains questions, answer keys and flag     
+    for i in range(1,row):
+        qa = QuestionsAnswers()
+        qa.questions = ws.cell(i,1).value
+        qa.answers = ws.cell(i,2).value
+        qa.question_used = 0       
+        list.append(qa)
+    list.pop(0)     
+    return list                                
 
 check_data() 
 
