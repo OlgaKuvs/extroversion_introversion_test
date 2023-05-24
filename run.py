@@ -54,7 +54,7 @@ class QuestionsAnswers:
         self.question_used = 0
 
 
-print(Fore.YELLOW + Style.BRIGHT + BANNER + "WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
+print(Fore.YELLOW + Style.BRIGHT + BANNER + " WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
 
 def check_data_workbook(name_used, email_used):
     """
@@ -74,11 +74,11 @@ def check_data_workbook(name_used, email_used):
             result = row[2].value           
             if name.lower() == name_used.lower() and email == email_used:
                 if result > -3 and result < 3:
-                    print(f"Welcome again {name_used}! Your last result was mostly AMBIVERT")
+                    print(f" Welcome again {name_used}! Your last result was mostly AMBIVERT")
                 elif result <= -3:
-                    print(f"Welcome again {name_used}! Your last result was mostly INTROVERT")
+                    print(f" Welcome again {name_used}! Your last result was mostly INTROVERT")
                 elif result >= 3:
-                    print(f"Welcome again {name_used}! Your last result was mostly EXTROVERT")                
+                    print(f" Welcome again {name_used}! Your last result was mostly EXTROVERT")                
                 return True            
 
 
@@ -87,13 +87,13 @@ def check_data():
     # Check input for user's name and e-mail validation. If valid, call start_test function.
 
     while True:
-        name = input("\nPlease enter your name:\n")
+        name = input("\n Please enter your name:\n")
         name_valid = validate_name(name)        
         
         if name_valid:            
-            print(Fore.GREEN + Style.BRIGHT + f"\nHello, {name}!\n")            
+            print(Fore.GREEN + Style.BRIGHT + f"\n Hello, {name}!\n")            
             while True:
-                email_str = input("Please enter your email: \n")                
+                email_str = input(" Please enter your email: \n")                
                 if validate_email(email_str):
                     while True:
                         clear()                        
@@ -146,9 +146,9 @@ def start_test(name_tested, email_tested):
 
         if result:   
             print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-            print(Fore.GREEN + f"Welcome, {name_tested} 🙂 Let's start. 🚀\nAre you oriented more towards \nthe outer world or the inner world? 🤔\n ")    
-            print(Fore.GREEN + f"This easy test can give you a clear answer and help you understand \nyour personality.🧑\n ")
-            print(Fore.GREEN + Style.BRIGHT + f"Please enter Y for 'YES' answer or N for 'NO' answer. Enter Q to Quit")
+            print(Fore.GREEN + f" Welcome, {name_tested} 🙂 Let's start. 🚀 \n Are you oriented more towards the outer world or the inner world? 🤔\n ")    
+            print(Fore.GREEN + f" This easy test can give you a clear answer and help you understand \n your personality.🧑\n ")
+            print(Fore.GREEN + Style.BRIGHT + f" Please enter Y for 'YES' answer or N for 'NO' answer. Enter Q to Quit")
             print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - \n")    
 
             list_t_normal = load_from_workbook("Test1")
@@ -255,13 +255,13 @@ def check_results(score):
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     if score >= -3 and score <= 3:
         
-        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly AMBIVERT, \nexhibit qualities of both introversion and extroversion,\nyou can flip into either depending on their mood, context and goals.") 
+        print(Fore.GREEN + Style.BRIGHT + "\n Congratulations! You finished the test.\n\n You are mostly AMBIVERT, \n exhibit qualities of both introversion and extroversion,\n you can flip into either depending on their mood, context and goals.") 
         
     elif score < -3:
-        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly INTROVERT, \nyou enjoy spending time alone and you feel more comfortable \nfocusing on your inner thoughts and ideas. ") 
+        print(Fore.GREEN + Style.BRIGHT + "\n Congratulations! You finished the test.\n\n You are mostly INTROVERT, \n you enjoy spending time alone and you feel more comfortable \n focusing on your inner thoughts and ideas. ") 
         
     elif score > 3:
-        print(Fore.GREEN + Style.BRIGHT + "\nCongratulations! You finished the test.\n\nYou are mostly EXTROVERT, \nyou enjoy being around other people and you gain energy from them.")
+        print(Fore.GREEN + Style.BRIGHT + "\n Congratulations! You finished the test.\n\n You are mostly EXTROVERT, \n you enjoy being around other people and you gain energy from them.")
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
 def finish_test(user_is):     
@@ -270,10 +270,10 @@ def finish_test(user_is):
     if not user_is:        
         return True
     else:
-        print(Fore.YELLOW + "\nWould you like to try the test again?")
+        print(Fore.YELLOW + "\n Would you like to try the test again?")
 
         while True:
-            repeat_test = input("Enter Y or N\n")
+            repeat_test = input(" Enter Y or N\n")
 
             if repeat_test.lower() == "y":
                 clear()
