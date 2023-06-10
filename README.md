@@ -58,7 +58,21 @@ For the new user, a description of the test is displayed. For the returning user
 ### Passing the test
 There are 3 groups of questions in the database: general questions, specific questions to determine introversion, and specific questions to determine extroversion. 
 The test begins with a general group of questions.
-For each answer in the direction of extroversion the user receives 1 point, in the direction of introversion -1 point. 
+For each answer in the direction of extroversion the user receives 1 point, in the direction of introversion the user receives -1 point. 
+If user reaches -4 or 4 points, the program switches to specific questions from the extroversion or introversion section, respectively. If the number of points goes back to the zone between -3 and 3, then the user returns to the list of basic questions. The test continues until the end of the list of questions.
+
+### Test result
+The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert. 
+
+### Writing to the database 
+After the end of the test, the username, email and test result are entered into the database. 
+
+
+
+
+
+
+
 
 
 
