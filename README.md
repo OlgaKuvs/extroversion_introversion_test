@@ -9,7 +9,16 @@
 - <a href="#introduction">Introduction</a>
 - <a href="#flow">Flowchart</a>
 - <a href="#experience">User Experience Design</a>
+    - <a href="#first_time_user">First Time User</a>
+    - <a href="#returning_user">Returning User</a>
 - <a href="#features">Features</a>
+    - <a href="#message">Introductory Message</a>
+    - <a href="#validation">Data Validation</a>
+    - <a href="#passing">Passing the Test</a>
+    - <a href="#result">Test Result</a>
+    - <a href="#database">Writing to Database</a>
+- <a href="#model">Data Model</a>
+
 
 ## <div id="introduction">Introduction</div>
 
@@ -32,13 +41,13 @@ The below flowchart shows the order in which actions are taken and how the progr
 ![View flowchart](documentation/flowchart.png)
 
 ## <div id="experience">User Experience Design</div>
-### First Time User
+### <div id="first_time_user">First Time User</div>
 
 - As a person who like likes to take tests, I would like some test with psychological questions but not too  long and difficult.
 - As someone unfamiliar with the psychology, I would like something new and interesting  to pick up.
 - As someone who is well-versed in psychology, I would like to compare this test with other tests I know to form my opinion.
 
-### Returning User
+### <div id="returning_user">Returning User</div>
 
 - As a returning user, I would like to see my most recent result.
 - I would like to be able to take the test again and compare the results. 
@@ -46,26 +55,41 @@ The below flowchart shows the order in which actions are taken and how the progr
 
 
 ## <div id="features">Features</div>
-### Introductory message
+### <div id="message">Introductory Message</div>
 
 When the user runs the system, they will be greeted with a logo and a welcome message.
 
-### Data Validation
+### <div id="validation">Data Validation</div>
 The user is asked to enter their name and email. The data will only be classified as valid if the name contains at least 2 letters and the email address is in the correct format.
 The data is validated, and it is checked whether the user exists in the database.
 For the new user, a description of the test is displayed. For the returning user, the program shows the most recent result and asks if they want to take the test again. 
 
-### Passing the test
+### <div id="passing">Passing the Test</div>
 There are 3 groups of questions in the database: general questions, specific questions to determine introversion, and specific questions to determine extroversion. 
 The test begins with a general group of questions.
 For each answer in the direction of extroversion the user receives 1 point, in the direction of introversion the user receives -1 point. 
 If user reaches -4 or 4 points, the program switches to specific questions from the extroversion or introversion section, respectively. If the number of points goes back to the zone between -3 and 3, then the user returns to the list of basic questions. The test continues until the end of the list of questions.
 
-### Test result
+### <div id="result">Test Result</div>
 The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert. 
 
-### Writing to the database 
-After the end of the test, the username, email and test result are entered into the database. 
+### <div id="database">Writing to Database</div> 
+After the end of the test, the username, email and test result are entered into the database. Excel sheets were used to store test questions, user's data and test results. The sheets consists of 4 worksheets: 'Test1', 'Test2', 'Test3' and 'Users'.
+
+Each test sheet consists of questions and keys to answers.
+![](documentation/excel_sheet_sample1.png)
+
+'Users' sheet consists of user's name, email and test result.
+![](documentation/excel_sheet_sample2.png)
+
+## <div id="model">Data Model</div>
+
+
+
+
+
+ 
+
 
 
 
