@@ -16,8 +16,9 @@
     - <a href="#validation">Data Validation</a>
     - <a href="#passing">Passing the Test</a>
     - <a href="#result">Test Result</a>
-    - <a href="#database">Writing to Database</a>
 - <a href="#model">Data Model</a>
+    - <a href="#database">Writing to Database</a>
+    - <a href="#class">Questions_Answers Class</a>
 
 
 ## <div id="introduction">Introduction</div>
@@ -73,8 +74,10 @@ If user reaches -4 or 4 points, the program switches to specific questions from 
 ### <div id="result">Test Result</div>
 The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert. 
 
+## <div id="model">Data Model</div>
+
 ### <div id="database">Writing to Database</div> 
-After the end of the test, the username, email and test result are entered into the database. Excel sheets were used to store test questions, user's data and test results. The sheets consists of 4 worksheets: 'Test1', 'Test2', 'Test3' and 'Users'.
+After the end of the test, the username, email and test result are entered into the database. Excel sheets were used to store the test questions, user's data and test results. The workbook consists of 4 worksheets: 'Test1', 'Test2', 'Test3' and 'Users'.
 
 Each test sheet consists of questions and keys to answers.
 ![](documentation/excel_sheet_sample1.png)
@@ -82,7 +85,17 @@ Each test sheet consists of questions and keys to answers.
 'Users' sheet consists of user's name, email and test result.
 ![](documentation/excel_sheet_sample2.png)
 
-## <div id="model">Data Model</div>
+### Questions_Answers Class
+- A Questions_Answers Class was created to contain the data from the database of the test questions and if the question was already used. 
+- A Questions_Answers  has the following attributes:
+    - questions: list of questions
+    - answers: list of answer keys
+    - question_used: a flag that indicates whether the question has already been used in the test
+
+    
+
+
+
 
 
 

@@ -47,7 +47,7 @@ def clear():
 
 # Class for the questions and answer key instances and used question flag
 
-class QuestionsAnswers:    
+class Questions_Answers:    
     def __init__(self):
         self.questions = ""
         self.answers = ""
@@ -299,7 +299,7 @@ def load_from_workbook(test_sheet):
 
     # populate list with object which contains questions, answer keys and flag     
     for i in range(1,row):
-        qa = QuestionsAnswers()
+        qa = Questions_Answers()
         qa.questions = ws.cell(i,1).value
         qa.answers = ws.cell(i,2).value
         qa.question_used = 0       
