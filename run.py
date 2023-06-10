@@ -146,7 +146,7 @@ def start_test(name_tested, email_tested):
 
         if result:   
             print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-            print(Fore.GREEN + f" Welcome, {name_tested} 🙂 Let's start. 🚀 \n Are you oriented more towards the outer world or the inner world? 🤔\n ")    
+            print(Fore.GREEN + f" Welcome, {name_tested} 🙂 !  Let's start. 🚀 \n Are you oriented more towards the outer world or the inner world? 🤔\n ")    
             print(Fore.GREEN + f" This easy test can give you a clear answer and help you understand \n your personality.🧑\n ")
             print(Fore.GREEN + Style.BRIGHT + f" Please enter Y for 'YES' answer or N for 'NO' answer. Enter Q to Quit")
             print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - \n")    

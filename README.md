@@ -19,6 +19,11 @@
 - <a href="#model">Data Model</a>
     - <a href="#database">Writing to Database</a>
     - <a href="#class">Questions_Answers Class</a>
+- <a href="#technologies">Technologies Used</a>
+- <a href="#testing">Testing</a>
+    - <a href="#validation">Validation</a>
+    - <a href="#manual_testing">Manual Testing</a>
+    - <a href="#bugs">Bugs</a>
 
 
 ## <div id="introduction">Introduction</div>
@@ -57,15 +62,17 @@ The below flowchart shows the order in which actions are taken and how the progr
 
 ## <div id="features">Features</div>
 ### <div id="message">Introductory Message</div>
-
 When the user runs the system, they will be greeted with a logo and a welcome message.
 
 ### <div id="validation">Data Validation</div>
+![](documentation/screenshot_test2.png)
 The user is asked to enter their name and email. The data will only be classified as valid if the name contains at least 2 letters and the email address is in the correct format.
 The data is validated, and it is checked whether the user exists in the database.
-For the new user, a description of the test is displayed. For the returning user, the program shows the most recent result and asks if they want to take the test again. 
+For the new user, a description of the test is displayed. For the returning user, the program shows the most recent result and asks if they want to take the test again.
+![](documentation/screenshot_test1.png) 
 
 ### <div id="passing">Passing the Test</div>
+![](documentation/screenshot_test3.png)
 There are 3 groups of questions in the database: general questions, specific questions to determine introversion, and specific questions to determine extroversion. 
 The test begins with a general group of questions.
 For each answer in the direction of extroversion the user receives 1 point, in the direction of introversion the user receives -1 point. 
@@ -85,14 +92,34 @@ Each test sheet consists of questions and keys to answers.
 'Users' sheet consists of user's name, email and test result.
 ![](documentation/excel_sheet_sample2.png)
 
-### Questions_Answers Class
-- A Questions_Answers Class was created to contain the data from the database of the test questions and if the question was already used. 
-- A Questions_Answers  has the following attributes:
+### <div id="class">Questions_Answers Class</div>
+- A Questions_Answers Class was created to contain the data of the test questions and the flag if the question has already been used. 
+- A Questions_Answers has the following attributes:
     - questions: list of questions
     - answers: list of answer keys
     - question_used: a flag that indicates whether the question has already been used in the test
 
+## <div id="technologies">Technologies Used</div>
+- The application was developed with Python
+    - Python Packages:
+        - [Openpyxl](https://pypi.org/project/openpyxl/) as a Python library to read/write Excel files.
+        - [Colorama](https://pypi.org/project/colorama/) to print colored terminal text 
+        - Platform module and OS Module to check the system/OS name and interact with the underlying operating system
+- [Heroku](https://www.heroku.com/platform) was used for deployment
+- [Flowchart Maker and Online Diagram Software](https://app.diagrams.net/) was used to generate the flowchart
+- [VS Code](https://code.visualstudio.com/) was used for development
+
+## <div id="testing">Testing</div>
+### <div id="validation">Validation</div>
+
+### <div id="manual_testing">Manual Testing</div>
+### <div id="bugs">Bugs</div>
+
+
     
+
+
+
 
 
 
