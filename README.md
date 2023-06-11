@@ -110,9 +110,24 @@ Each test sheet consists of questions and keys to answers.
 - [VS Code](https://code.visualstudio.com/) was used for development
 
 ## <div id="testing">Testing</div>
+### <div id="manual_testing">Manual Testing</div>
+|  Testing |  Result |   
+|---|---|
+| Testing all instances where user input is required. Entering valid and invalid data. | Invalid input is handled correctly. An error message is displayed. The user is prompted to try again. |
+| Application navigation. Checking that the correct actions are being taken according to user input. | Navigation works as expected. Invalid inputs are handled.
+| Check switching between lists of test questions. | Switching occurs correctly when the user reaches -4 or 4 points. If the score goes back to zone from -3 to 3, the program goes back to questions from the base list.
+| Correct scoring. | Counting occurs in accordance with the key to the answers (+1 for a question towards extraversion, -1 for a question towards introversion). The final result is calculated correctly.
+| Calculation and display of the test result. | The test result (extroversion, introversion or ambiversion) is calculated and displayed as expected. 
+| Write user data and test result to the database table. | The user's name, e-mail and the final number of points are recorded correctly, in the first empty row and in the corresponding columns of the table. |  
+| Reading data of returning user. | Right checking if the name and email address of the returning user is in the database. The most recent test result is displayed as expected.
+
+
+
+
+
 ### <div id="validation">Validation</div>
 
-### <div id="manual_testing">Manual Testing</div>
+
 ### <div id="bugs">Bugs</div>
 
 
