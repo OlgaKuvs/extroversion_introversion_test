@@ -169,23 +169,24 @@ def start_test(name_tested, email_tested):
         result = finish_test(user_exists)
 
         if result:
-            print(" - - - - - - - - -  - - - - - "+
-            "- - - - - - - - - - - - - - - - - - - - - - ")
+            print(" - - - - - - - - -  - - - - - " +
+                  "- - - - - - - - - - - - - - - - - - - - - - ")
             print(Fore.GREEN + f" Welcome, {name_tested} 🙂 !" +
-            " Let's start. 🚀 \n Are you oriented more towards"+
-            " the outer world or the inner world? 🤔\n ")
+                  " Let's start. 🚀 \n Are you oriented more towards" +
+                  " the outer world or the inner world? 🤔\n ")
             print(Fore.GREEN + " This easy test can give you a clear answer " +
-            "and help you understand \n your personality.🧑\n ")
-            print(Fore.GREEN + Style.BRIGHT + " Please enter Y for 'YES'"+
-            " answer or N for 'NO' answer. Enter Q to Quit")
-            print(" - - - - - - - - -  - - - - - - - - -"+
-            " - - - - - - - - - - - - - - - - - - \n")
+                  "and help you understand \n your personality.🧑\n ")
+            print(Fore.GREEN + Style.BRIGHT + " Please enter Y for 'YES'" +
+                  " answer or N for 'NO' answer. Enter Q to Quit")
+            print(" - - - - - - - - -  - - - - - - - - -" +
+                  " - - - - - - - - - - - - - - - - - - \n")
 
             list_t_normal = load_from_workbook("Test1")
             list_t_intra = load_from_workbook("Test2")
             list_t_extra = load_from_workbook("Test3")
 
-            final_score = check_answers(list_t_normal, list_t_intra, list_t_extra)
+            final_score = check_answers(list_t_normal,
+                                        list_t_intra, list_t_extra)
 
             check_results(final_score)
 
@@ -203,29 +204,30 @@ def insert_user_data(name_in, email_in, result_in):
     try:
         wb2 = load_workbook(EXCEL_SHEET_NAME)
     except FileNotFoundError as fnf_error:
-        print(Fore.RED  + fnf_error)
+        print(Fore.RED + fnf_error)
     else:
         ws = wb2["Users"]
 
     # Find if user exists and overwrite test result
     row = ws.max_row + 1
     user_found = 0
-    for i in range(1,row):
-        s = str(ws.cell(i,1).value)
-        e = str(ws.cell(i,2).value)
+    for i in range(1, row):
+        s = str(ws.cell(i, 1).value)
+        e = str(ws.cell(i, 2).value)
         if s.lower() == name_in.lower() and e == email_in:
-            ws.cell(i,3).value = result_in
+            ws.cell(i, 3).value = result_in
             user_found = row
     # If it is a new user insert data to the find first empty row
     if user_found != row:
-            ws.cell(row=row, column=1).value = name_in
-            ws.cell(row=row, column=2).value = email_in
-            ws.cell(row=row, column=3).value = result_in
+        ws.cell(row=row, column=1).value = name_in
+        ws.cell(row=row, column=2).value = email_in
+        ws.cell(row=row, column=3).value = result_in
     wb2.save(EXCEL_SHEET_NAME)
 
+
 def get_next_question(inner_score, list_test_normal,
-    list_test_intra, list_test_extra):
-    #Сhoose a category of questions depending on the score.
+                      list_test_intra, list_test_extra):
+    # Сhoose a category of questions depending on the score.
 
     if inner_score > -3 and inner_score < 3:
         for i in range(len(list_test_normal)):
@@ -254,64 +256,71 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
     score = 0
 
     while True:
-            test_item = get_next_question(score, list_test_normal,
-            list_test_intra, list_test_extra)
+        test_item = get_next_question(score, list_test_normal,
+                                      list_test_intra, list_test_extra)
 
-            if test_item is None:
-                return score
-            key_answer = test_item.answers
+        if test_item is None:
+            return score
+        key_answer = test_item.answers
 
-            print(Fore.YELLOW +
-            f" {test_item.questions}  Enter  Y / N , Q to Quit")
-            user_answer = input("🔻\n")
+        print(Fore.YELLOW +
+              f" {test_item.questions}  Enter  Y / N , Q to Quit")
+        user_answer = input("🔻\n")
 
-            if user_answer.lower() == "q":
-                clear()
-                print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-                exit()
-            elif (user_answer.lower() == "y" and key_answer == 1) :
-                score += 1
-                test_item.question_used = 1
-            elif (user_answer.lower() == "y" and key_answer == 0):
-                score -= 1
-                test_item.question_used = 1
-            elif (user_answer.lower() == "n" and key_answer == 1) :
-                score -= 1
-                test_item.question_used = 1
-            elif (user_answer.lower() == "n" and key_answer == 0):
-                score += 1
-                test_item.question_used = 1
-            else:
-                print(Fore.RED + "❌ Invalid data... " +
-                " Please enter  Y / N or Q to Quit \n")
+        if user_answer.lower() == "q":
+            clear()
+            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+            exit()
+        elif (user_answer.lower() == "y" and key_answer == 1):
+            score += 1
+            test_item.question_used = 1
+        elif (user_answer.lower() == "y" and key_answer == 0):
+            score -= 1
+            test_item.question_used = 1
+        elif (user_answer.lower() == "n" and key_answer == 1):
+            score -= 1
+            test_item.question_used = 1
+        elif (user_answer.lower() == "n" and key_answer == 0):
+            score += 1
+            test_item.question_used = 1
+        else:
+            print(Fore.RED + "❌ Invalid data... " +
+                  " Please enter  Y / N or Q to Quit \n")
+
 
 def check_results(score):
 
-    #Check results depending on score and print them.
+    # Check results depending on score and print them.
 
     clear()
 
-    print(" - - - - - - - - -  - - - - - - - - "+
+    print(" - - - - - - - - -  - - - - - - - - " +
           "- - - - - - - - - - - - - - - - - - - ")
     if score >= -3 and score <= 3:
 
         print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n You are mostly AMBIVERT," +
+              "\n Congratulations! You finished the test.\n\n" +
+              "You are mostly AMBIVERT," +
               " \n exhibit qualities of both introversion and extroversion," +
-              "\n you can flip into either depending on their mood, context and goals.")
+              "\n you can flip into either depending on their mood," +
+              "context and goals.")
 
     elif score < -3:
         print(Fore.GREEN + Style.BRIGHT +
-        "\n Congratulations! You finished the test.\n\n You are mostly INTROVERT," +
-        " \n you enjoy spending time alone and you feel more comfortable"+
-        " \n focusing on your inner thoughts and ideas. ")
+              "\n Congratulations! You finished the test.\n\n" +
+              " You are mostly INTROVERT," +
+              " \n you enjoy spending time alone and you feel" +
+              "more comfortable" +
+              " \n focusing on your inner thoughts and ideas. ")
 
     elif score > 3:
         print(Fore.GREEN + Style.BRIGHT +
-        "\n Congratulations! You finished the test.\n\n"+
-        " You are mostly EXTROVERT, \n you enjoy being around " +
-        "other people and you gain energy from them.")
-    print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+              "\n Congratulations! You finished the test.\n\n" +
+              " You are mostly EXTROVERT, \n you enjoy being around " +
+              "other people and you gain energy from them.")
+    print(" - - - - - - - - -  - - - - - - -" +
+          "- - - - - - - - - - - - - - - - - - - - ")
+
 
 def finish_test(user_is):
     """
@@ -323,7 +332,7 @@ def finish_test(user_is):
         return True
     else:
         print(Fore.YELLOW +
-        "\n Would you like to try the test again?")
+              "\n Would you like to try the test again?")
 
         while True:
             repeat_test = input(" Enter Y or N\n")
@@ -336,7 +345,7 @@ def finish_test(user_is):
                 return False
             else:
                 print(Fore.RED +
-                " ❌ Invalid data... Please enter Y or N \n")
+                      " ❌ Invalid data... Please enter Y or N \n")
 
 
 def load_from_workbook(test_sheet):
@@ -352,13 +361,15 @@ def load_from_workbook(test_sheet):
     row = ws.max_row + 1
 
     # populate list with object which contains questions, answer keys and flag
-    for i in range(1,row):
+    for i in range(1, row):
         qa = Questions_Answers()
-        qa.questions = ws.cell(i,1).value
-        qa.answers = ws.cell(i,2).value
+        qa.questions = ws.cell(i, 1).value
+        qa.answers = ws.cell(i, 2).value
         qa.question_used = 0
         list.append(qa)
     list.pop(0)
     return list
 
+
 check_data()
+
