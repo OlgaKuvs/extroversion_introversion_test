@@ -135,28 +135,40 @@ Each test sheet consists of questions and keys to answers.
 | Bug in the function that selects the question category. | Add <span style="background-color:lightgray">question_used</span> flag to check if the question was already used and set it's default value to 0. Change the flag value to 1 for used questions.  
 
 ## <div id="deployment">Deployment</div>
-Heroku Deployment Steps:
-1. Make sure all dependencies are listed in your requirements.txt file. To do this, type in your python terminal pip3 freeze > requirements.txt.
-2. Now all your requirements will be added to the requirements file.
-3. Go to the Heroku website and navigate to the sign up button in the top right-hand corner.
-4. Next, click "New" in the top right-hand corner and select "Create new app".
-5. Then choose an app name. It must be unique.
-6. Then select "Europe" as your region.
-7. Click "Create app".
-8. Navigate to the "Settings" tab.
-9. Click on "Config Vars".
-10. For the first "KEY", input "CREDS".
-11. For "VALUE", input your entire creds.json file including the curly braces. Click "Add".
-12. For the second "KEY", input "PORT".
-13. For the second "PORT", input "8000". Click "Add".
-14. Scroll down to Buildpacks and select "Add buildpack".
-15. Select Python first and then add another buildpack and select Node JS. Python must be listed above Node JS for this to work.
-16. Scroll back to the top and select the "Deploy" tab.
-17. From Deployment method, select "GitHub".
-18. Now search for your GitHub repository name and select the correct repository.
-19. Now scroll down to Automatic deploys and choose the "main" branch. Therefore, any changes that have been pushed through to GitHub will update the Heroku app.
-20. Then scroll down to Manual deploy and click "Deploy Branch".
-21. When complete, click on "View", which will open a new tab and display your program.
+<details>
+<summary>Cloning the Repository</summary>
+
+    1. Click on the "Code" button near the top right corner of the page.
+    2. Copy the URL that appears in the box. Open your terminal and navigate to the directory where you want to clone the repository.
+    3. Type "git clone" followed by a space, and then paste the URL you copied in step 2.
+    4. Press enter to run the command. This will clone the repository onto your local machine.
+    5. You should now have a local copy of the GitHub repository on your machine.
+</details>
+<details>
+<summary>Heroku Deployment Steps</summary>
+
+    1. Make sure all dependencies are listed in your requirements.txt file. To do this, type in your python terminal pip3 freeze > requirements.txt.
+    2. Now all your requirements will be added to the requirements file.
+    3. Go to the Heroku website and navigate to the sign up button in the top right-hand corner.
+    4. Next, click "New" in the top right-hand corner and select "Create new app".
+    5. Then choose an app name. It must be unique.
+    6. Then select "Europe" as your region.
+    7. Click "Create app".
+    8. Navigate to the "Settings" tab.
+    9. Click on "Config Vars".
+    10. For the first "KEY", input "CREDS".
+    11. For "VALUE", input your entire creds.json file including the curly braces. Click "Add".
+    12. For the second "KEY", input "PORT".
+    13. For the second "PORT", input "8000". Click "Add".
+    14. Scroll down to Buildpacks and select "Add buildpack".
+    15. Select Python first and then add another buildpack and select Node JS. Python must be listed above Node JS for this to work.
+    16. Scroll back to the top and select the "Deploy" tab.
+    17. From Deployment method, select "GitHub".
+    18. Now search for your GitHub repository name and select the correct repository.
+    19. Now scroll down to Automatic deploys and choose the "main" branch. Therefore, any changes that have been pushed through to GitHub will update the Heroku app.
+    20. Then scroll down to Manual deploy and click "Deploy Branch".
+    21. When complete, click on "View", which will open a new tab and display your program.
+</details>
 
 
 
