@@ -25,6 +25,7 @@
     - <a href="#manual_testing">Manual Testing</a>
     - <a href="#bugs">Bugs</a>
 - <a href="#deployment">Deployment</a>
+- <a href="#credits">Credits</a>
 
 
 ## <div id="introduction">Introduction</div>
@@ -80,6 +81,7 @@ For each answer in the direction of extroversion the user receives 1 point, in t
 If user reaches -4 or 4 points, the program switches to specific questions from the extroversion or introversion section, respectively. If the number of points goes back to the zone between -3 and 3, then the user returns to the list of basic questions. The test continues until the end of the list of questions.
 
 ### <div id="result">Test Result</div>
+![](documentation/result.png)
 The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert.
 
 ## <div id="model">Data Model</div>
@@ -130,11 +132,12 @@ The code for run.py was passed through a PEP8 validator with no issues present.
 
 ### <div id="bugs">Bugs</div>
 
-
 |  Issue |  Solution |
 |---|---|
 | User data was written to the data table incorrectly. | Edit the <span style="background-color:lightgray">insert_user_data</span> function to find the last empty row and insert data into it. Add the <span style="background-color:lightgray">user_found</span> flag to check if the user exists and overwrite the test result. If not, insert the new user's data into the table.  |
-| Bug in the function that selects the question category. | Add <span style="background-color:lightgray">question_used</span> flag to check if the question was already used and set it's default value to 0. Change the flag value to 1 for used questions.
+| Bug in the function that selects the question category. | Add <span style="background-color:lightgray">question_used</span> flag to check if the question was already used and set it's default value to 0. Change the flag value to 1 for used questions. |
+|Function to clear terminal window did not work for Linux OS. |Import libraries to check OS and edit function <span style="background-color:lightgray">clear()</span> according to OS.
+
 
 ## <div id="deployment">Deployment</div>
 <details>
@@ -171,3 +174,7 @@ The code for run.py was passed through a PEP8 validator with no issues present.
     20. Then scroll down to Manual deploy and click "Deploy Branch".
     21. When complete, click on "View", which will open a new tab and display your program.
 </details>
+
+## <div id="credits">Credits</div>
+
+Code Institute [repository template](https://github.com/Code-Institute-Org/python-essentials-template) used for deployment.
