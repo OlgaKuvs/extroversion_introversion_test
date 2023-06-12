@@ -87,12 +87,12 @@ The final result of the test is determined by the score: if the score is less th
 ## <div id="model">Data Model</div>
 
 ### <div id="database">Writing to Database</div>
-After the end of the test, the username, email and test result are entered into the database. Excel sheets were used to store the test questions, user's data and test results. The workbook consists of 4 worksheets: 'Test1', 'Test2', 'Test3' and 'Users'.
+After the user passes the test, the username, email and test result are entered into the database. Excel sheets were used to store the test questions, user's data and test results. The workbook consists of 4 tables: 'Test1', 'Test2', 'Test3' and 'Users'.
 
-Each test sheet consists of questions and keys to answers.
+Each test table consists of questions and answer keys.
 ![](documentation/excel_sheet_sample1.png)
 
-'Users' sheet consists of user's name, email and test result.
+'Users' table consists of 3 columns: user's name, email and test result.
 ![](documentation/excel_sheet_sample2.png)
 
 ### <div id="class">Questions_Answers Class</div>
@@ -121,7 +121,7 @@ Each test sheet consists of questions and keys to answers.
 | Check switching between lists of test questions. | Switching occurs correctly when the user reaches -4 or 4 points. If the score goes back to zone from -3 to 3, the program goes back to questions from the base list.
 | Correct scoring. | Counting occurs in accordance with the key to the answers (+1 for a question towards extraversion, -1 for a question towards introversion). The final result is calculated correctly.
 | Calculation and display of the test result. | The test result (extroversion, introversion or ambiversion) is calculated and displayed as expected.
-| Write user data and test result to the database table. | The user's name, e-mail and the final number of points are recorded correctly, in the first empty row and in the corresponding columns of the table. |
+| Writing user data and test result to the database table. | The user's name, e-mail and the final number of points are recorded correctly, in the first empty row and in the corresponding columns of the table. |
 | Reading data of returning user. | Right checking if the name and email address of the returning user is in the database. The most recent test result is displayed as expected.
 
 
@@ -136,7 +136,7 @@ The code for run.py was passed through a PEP8 validator with no issues present.
 |---|---|
 | User data was written to the data table incorrectly. | Edit the <span style="background-color:lightgray">insert_user_data</span> function to find the last empty row and insert data into it. Add the <span style="background-color:lightgray">user_found</span> flag to check if the user exists and overwrite the test result. If not, insert the new user's data into the table.  |
 | Bug in the function that selects the question category. | Add <span style="background-color:lightgray">question_used</span> flag to check if the question was already used and set it's default value to 0. Change the flag value to 1 for used questions. |
-|Function to clear terminal window did not work for Linux OS. |Import libraries to check OS and edit function <span style="background-color:lightgray">clear()</span> according to OS.
+|Function to clear terminal window did not work for Linux OS. |Import libraries to check OS and edit function <span style="background-color:lightgray">clear()</span> depending on the OS.
 
 
 ## <div id="deployment">Deployment</div>
