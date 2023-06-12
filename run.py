@@ -193,6 +193,7 @@ def start_test(name_tested, email_tested):
             user_exists = True      
                 
         else:
+            clear()
             print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
             exit()
 
@@ -265,6 +266,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
             user_answer = input("🔻\n")                               
            
             if user_answer.lower() == "q":
+                clear()
                 print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)                
                 exit() 
             elif (user_answer.lower() == "y" and key_answer == 1) :       
