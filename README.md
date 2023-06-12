@@ -24,6 +24,7 @@
     - <a href="#validation">Validation</a>
     - <a href="#manual_testing">Manual Testing</a>
     - <a href="#bugs">Bugs</a>
+- <a href="#deployment">Deployment</a>
 
 
 ## <div id="introduction">Introduction</div>
@@ -122,13 +123,43 @@ Each test sheet consists of questions and keys to answers.
 | Reading data of returning user. | Right checking if the name and email address of the returning user is in the database. The most recent test result is displayed as expected.
 
 
-
-
-
 ### <div id="validation">Validation</div>
 
 
 ### <div id="bugs">Bugs</div>
+
+
+|  Issue |  Solution |   
+|---|---|
+| User data was written to the data table incorrectly. | Edit the <span style="background-color:lightgray">insert_user_data</span> function to find the last empty row and insert data into it. Add the <span style="background-color:lightgray">user_found</span> flag to check if the user exists and overwrite the test result. If not, insert the new user's data into the table.  |
+| Bug in the function that selects the question category. | Add <span style="background-color:lightgray">question_used</span> flag to check if the question was already used and set it's default value to 0. Change the flag value to 1 for used questions.  
+
+## <div id="deployment">Deployment</div>
+Heroku Deployment Steps:
+1. Make sure all dependencies are listed in your requirements.txt file. To do this, type in your python terminal pip3 freeze > requirements.txt.
+2. Now all your requirements will be added to the requirements file.
+3. Go to the Heroku website and navigate to the sign up button in the top right-hand corner.
+4. Next, click "New" in the top right-hand corner and select "Create new app".
+5. Then choose an app name. It must be unique.
+6. Then select "Europe" as your region.
+7. Click "Create app".
+8. Navigate to the "Settings" tab.
+9. Click on "Config Vars".
+10. For the first "KEY", input "CREDS".
+11. For "VALUE", input your entire creds.json file including the curly braces. Click "Add".
+12. For the second "KEY", input "PORT".
+13. For the second "PORT", input "8000". Click "Add".
+14. Scroll down to Buildpacks and select "Add buildpack".
+15. Select Python first and then add another buildpack and select Node JS. Python must be listed above Node JS for this to work.
+16. Scroll back to the top and select the "Deploy" tab.
+17. From Deployment method, select "GitHub".
+18. Now search for your GitHub repository name and select the correct repository.
+19. Now scroll down to Automatic deploys and choose the "main" branch. Therefore, any changes that have been pushed through to GitHub will update the Heroku app.
+20. Then scroll down to Manual deploy and click "Deploy Branch".
+21. When complete, click on "View", which will open a new tab and display your program.
+
+
+
 
 
     

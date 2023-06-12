@@ -9,25 +9,37 @@ import re
 
 EXCEL_SHEET_NAME = 'test_e_i.xlsx'
 BANNER = """
-.---..   ..---..--.  .--.   --.--.   ..---..--.  .--.   .---..---..-..---.
-|     \\ /   |  |   ):    :    |  |\\  |  |  |   ):    :    |  |   (   ) |  
-|---   /    |  |--' |    |    |  | \\ |  |  |--' |    |    |  |--- `-.  |  
-|     / \\   |  |  \ :    ;    |  |  \\|  |  |  \\ :    ;    |  |   (   ) |  
-'---''   '  '  '   ` `--'   --'--'   '  '  '   ` `--'     '  '---'`-'  '  
-'||''''|'||' '||''||'''||''|. ..|''||    '||'|.   '||''||'''||''|. ..|''||    |''||'''||''''| .|'''.|''||''| 
- ||  .    || |    ||   ||   |.|'    ||    || |'|   |   ||   ||   |.|'    ||      ||   ||  .   ||..  '  ||    
- ||''|     ||     ||   ||''|'||      ||   || | '|. |   ||   ||''|'||      ||     ||   ||''|    ''|||.  ||    
- ||       | ||    ||   ||   |'|.     ||   || |   |||   ||   ||   |'|.     ||     ||   ||     .     '|| ||    
-.||......|   ||. .||. .||.  '|''|...|'   .||.|.   '|  .||. .||.  '|''|...|'     .||. .||.....|'....|' .||.   
-                                                                                                             
-                                                                                                             """                                                                                                                                                 
+88888888888          88          888888888888  88888888888  ad88888ba  888888888888  
+88                   88               88       88          d8"     "8b      88       
+88                   88               88       88          Y8,              88       
+88aaaaa              88               88       88aaaaa      Y8aaaaa,        88       
+88aaaaa              88               88       88aaaaa       aaaaa8b,       88       
+88                   88               88       88                  `8b      88       
+88                   88               88       88          Y8a     a8P      88       
+88888888888  888     88  888          88       88888888888  "Y88888P"       88
+
+"""                                                                                                                                                 
                                                                                                                                                  
-THANK_YOU = """ 
-.---..   .    .    .   ..   .  .   ..--. .   ..
-  |  |   |   / \   |\\  ||  /    \ /:    :|   ||
-  |  |---|  /- -\  | \\ ||-'      : |    ||   ||
-  |  |   | /     \ |  \\||  \     | :    ;:   ;'
-  '  '   ''       `'   ''   `    '  `--'  `-' o
+THANK_YOU = """
+888888888888  88        88         db         888b      88  88      a8P      
+     88       88        88        d88b        8888b     88  88     88       
+     88       88        88       d8'`8b       88 `8b    88  88  ,88         
+     88       88aaaaaaaa88      d8'  `8b      88  `8b   88  88 d88          
+     88       88aaaaaaaa88     d8YaaaaY8b     88   `8b  88  888888,         
+     88       88        88    d8aaaaaaaa8b    88    `8b 88  88P   Y8b        
+     88       88        88   d8'        `8b   88     `8888  88      88,      
+     88       88        88  d8'          `8b  88      `888  88       Y8b     
+
+                                                                             
+8b        d8  ,ad8888ba,    88        88  88                                 
+ Y8,    ,8P  d8"'    `"8b   88        88  88                                 
+  Y8,  ,8P  d8'        `8b  88        88  88                                 
+   "8aa8"   88          88  88        88  88                                 
+    `88'    88          88  88        88  88                                 
+     88     Y8,        ,8P  88        88                                   
+     88      Y8a.    .a8P   Y8a.    .a8P  aa                                 
+     88       `"Y8888Y"'     `"Y8888Y"'   88
+                                 
 """
 
 just_fix_windows_console()
@@ -141,12 +153,10 @@ def validate_email(email_val):
     """
     x = re.fullmatch(regex, email_val)
     if x:
-        return True    
-        
+        return True
     else:     
         return False   
-      
- 
+
 
 def start_test(name_tested, email_tested):
     """
@@ -205,7 +215,7 @@ def insert_user_data(name_in, email_in, result_in):
         if s.lower() == name_in.lower() and e == email_in:
             ws.cell(i,3).value = result_in
             user_found = row
-    # If new user insert data to the find first empty row
+    # If it is a new user insert data to the find first empty row
     if user_found != row:
             ws.cell(row=row, column=1).value = name_in
             ws.cell(row=row, column=2).value = email_in
@@ -284,20 +294,20 @@ def check_results(score):
     if score >= -3 and score <= 3:
         
         print(Fore.GREEN + Style.BRIGHT + 
-        "\n Congratulations! You finished the test.\n\n You are mostly AMBIVERT,"+
-        " \n exhibit qualities of both introversion and extroversion,"+
-        "\n you can flip into either depending on their mood, context and goals.") 
+              "\n Congratulations! You finished the test.\n\n You are mostly AMBIVERT," +
+              " \n exhibit qualities of both introversion and extroversion," +
+              "\n you can flip into either depending on their mood, context and goals.") 
         
     elif score < -3:
         print(Fore.GREEN + Style.BRIGHT + 
-        "\n Congratulations! You finished the test.\n\n You are mostly INTROVERT,"+
+        "\n Congratulations! You finished the test.\n\n You are mostly INTROVERT," +
         " \n you enjoy spending time alone and you feel more comfortable"+
         " \n focusing on your inner thoughts and ideas. ") 
         
     elif score > 3:
         print(Fore.GREEN + Style.BRIGHT + 
         "\n Congratulations! You finished the test.\n\n"+
-        " You are mostly EXTROVERT, \n you enjoy being around "+
+        " You are mostly EXTROVERT, \n you enjoy being around " +
         "other people and you gain energy from them.")
     print(" - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
