@@ -16,6 +16,7 @@
     - <a href="#validation">Data Validation</a>
     - <a href="#passing">Passing the Test</a>
     - <a href="#result">Test Result</a>
+    - <a href="#colours">Colours</a>
 - <a href="#model">Data Model</a>
     - <a href="#database">Writing to Database</a>
     - <a href="#class">Questions_Answers Class</a>
@@ -69,6 +70,7 @@ When the user runs the system, they will be greeted with a logo and a welcome me
 ### <div id="validation">Data Validation</div>
 ![](documentation/screenshot_test2.png)
 The user is asked to enter their name and email. The data will only be classified as valid if the name contains at least 2 letters and the email address is in the correct format.
+![](documentation/invalid_data.png)
 The data is validated, and it is checked whether the user exists in the database.
 For the new user, a description of the test is displayed. For the returning user, the program shows the most recent result and asks if they want to take the test again.
 ![](documentation/screenshot_test1.png)
@@ -83,6 +85,16 @@ If user reaches -4 or 4 points, the program switches to specific questions from 
 ### <div id="result">Test Result</div>
 ![](documentation/result.png)
 The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert.
+
+### <div id="Colours">Colours</div>
+I wanted to achieve a bright, eye-catching look, stick to the color theme as much as possible, and not use too many colors.
+
+ - Yellow - Used for banners, headers and for test questions.
+ - Red - Used for warnings about incorrect input or program errors.
+ - Green - Used to display basic test information and results.
+ - White - Used for user inputs.
+
+ In order to highlight some parts of the text, Style.BRIGHT attribute was used.
 
 ## <div id="model">Data Model</div>
 
