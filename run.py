@@ -6,7 +6,7 @@ from colorama import init
 import os
 import platform
 import re
-from openpyxl import load_workbook
+# from openpyxl import load_workbook
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -90,23 +90,23 @@ def check_data_workbook(name_used, email_used):
     else:
         ws = SHEET_NAME.worksheet("Users").get_all_values()
         # stock = SHEET.worksheet("stock").get_all_values()
-        ws.pop(0)
+        # ws[0].pop()
 
         for row in ws:
             name = row[0]
             email = row[1]
-            result = int(row[2])
 
             if name.lower() == name_used.lower() and email == email_used:
+                result = int(row[2])
                 if result > -3 and result < 3:
                     print(f" Welcome again {name_used}!" +
-                          "Your last result was mostly AMBIVERT")
+                        " Your last result was mostly AMBIVERT")
                 elif result <= -3:
                     print(f" Welcome again {name_used}!" +
-                          " Your last result was mostly INTROVERT")
+                        " Your last result was mostly INTROVERT")
                 elif result >= 3:
                     print(f" Welcome again {name_used}!" +
-                          " Your last result was mostly EXTROVERT")
+                        " Your last result was mostly EXTROVERT")
                 return True
 
 
@@ -214,23 +214,23 @@ def insert_user_data(name_in, email_in, result_in):
     except FileNotFoundError as fnf_error:
         print(Fore.RED + fnf_error)
     else:
-        # ws = SHEET_NAME.worksheet("Users")
         ws = SHEET_NAME.worksheet("Users").get_all_values()
-        ws.pop(0)
+        sheet1 = SHEET_NAME.worksheet("Users")
 
     # Find if user exists and overwrite test result
 
+    len1 = len(ws)
     user_found = 0
-    for i in range(0, len(ws)):
-        s = ws[i][0]
-        e = ws[i][1]
+    for i in range(1, len1):
+        name = ws[i][0]
+        email = ws[i][1]
 
-        if s.lower() == name_in.lower() and e == email_in:
-            ws[i][2] = result_in
+        if name.lower() == name_in.lower() and email == email_in:
+            # rownum = sheet1.index + 1
+            sheet1.update_cell(i+1, 3, result_in)
             user_found = len(ws)
     # If it is a new user insert data to the find first empty row
     if user_found != len(ws):
-        sheet1 = SHEET_NAME.worksheet("Users")
         sheet1.append_rows(values=[[name_in, email_in, result_in]])
 
 
