@@ -14,8 +14,12 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
     ]
 
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
 
-EXCEL_SHEET_NAME = 'test_e_i.xlsx'
+# SHEET_NAME = 'test_e_i.xlsx'
 BANNER = """
  _______  _______ ____   ___    ___ _   _ _____ ____   ___
 | ____\ \/ /_   _|  _ \ / _ \  |_ _| \ | |_   _|  _ \ / _ \\
@@ -79,16 +83,20 @@ def check_data_workbook(name_used, email_used):
     If yes, print user's last test result.
     """
     try:
-        wb2 = load_workbook(EXCEL_SHEET_NAME)
+        # wb2 = load_workbook(EXCEL_SHEET_NAME)
+        SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
     except FileNotFoundError as fnf_error:
         print(Fore.RED + Style.BRIGHT + fnf_error)
     else:
-        ws = wb2["Users"]
+        ws = SHEET_NAME.worksheet("Users").get_all_values()
+        # stock = SHEET.worksheet("stock").get_all_values()
+        ws.pop(0)
 
         for row in ws:
-            name = str(row[0].value)
-            email = row[1].value
-            result = row[2].value
+            name = row[0]
+            email = row[1]
+            result = int(row[2])
+
             if name.lower() == name_used.lower() and email == email_used:
                 if result > -3 and result < 3:
                     print(f" Welcome again {name_used}!" +
@@ -178,6 +186,7 @@ def start_test(name_tested, email_tested):
                   " answer or N for 'NO' answer. Enter Q to Quit")
             print(" - - - - - - - - -  - - - - - - - - -" +
                   " - - - - - - - - - - - - - - - - - - \n")
+            print("Loading test questions... \n")
 
             list_t_normal = load_from_workbook("Test1")
             list_t_intra = load_from_workbook("Test2")
@@ -200,27 +209,35 @@ def start_test(name_tested, email_tested):
 def insert_user_data(name_in, email_in, result_in):
     # Open worksheet
     try:
-        wb2 = load_workbook(EXCEL_SHEET_NAME)
+        # wb2 = load_workbook(EXCEL_SHEET_NAME)
+        SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
     except FileNotFoundError as fnf_error:
         print(Fore.RED + fnf_error)
     else:
-        ws = wb2["Users"]
+        # ws = SHEET_NAME.worksheet("Users")
+        ws = SHEET_NAME.worksheet("Users").get_all_values()
+        ws.pop(0)
 
     # Find if user exists and overwrite test result
-    row = ws.max_row + 1
+
     user_found = 0
-    for i in range(1, row):
-        s = str(ws.cell(i, 1).value)
-        e = str(ws.cell(i, 2).value)
+    for i in range(0, len(ws)):
+        s = ws[i][0]
+        e = ws[i][1]
+
         if s.lower() == name_in.lower() and e == email_in:
-            ws.cell(i, 3).value = result_in
-            user_found = row
+            ws[i][2] = result_in
+            user_found = len(ws)
     # If it is a new user insert data to the find first empty row
-    if user_found != row:
-        ws.cell(row=row, column=1).value = name_in
-        ws.cell(row=row, column=2).value = email_in
-        ws.cell(row=row, column=3).value = result_in
-    wb2.save(EXCEL_SHEET_NAME)
+    if user_found != len(ws):
+        sheet1 = SHEET_NAME.worksheet("Users")
+        sheet1.append_rows(values=[[name_in, email_in, result_in]])
+
+
+        # ws.cell(row=row, column=1).value = name_in
+        # ws.cell(row=row, column=2).value = email_in
+        # ws.cell(row=row, column=3).value = result_in
+    # SHEET_NAME.save(EXCEL_SHEET_NAME)
 
 
 def get_next_question(inner_score, list_test_normal,
@@ -259,7 +276,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
 
         if test_item is None:
             return score
-        key_answer = test_item.answers
+        key_answer = int(test_item.answers)
 
         print(Fore.YELLOW +
               f" {test_item.questions}  Enter  Y / N , Q to Quit")
@@ -349,23 +366,23 @@ def finish_test(user_is):
 def load_from_workbook(test_sheet):
     # open worksheet
     try:
-        wb2 = load_workbook(EXCEL_SHEET_NAME)
+        SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
     except FileNotFoundError as fnf_error:
         print(Fore.WHITE + Back.RED + fnf_error)
     else:
-        ws = wb2[test_sheet]
+        ws = SHEET_NAME.worksheet(test_sheet).get_all_values()
 
     list = []
-    row = ws.max_row + 1
+    # row = ws.max_row + 1
 
     # populate list with object which contains questions, answer keys and flag
-    for i in range(1, row):
+    for i in range(1, len(ws)):
         qa = Questions_Answers()
-        qa.questions = ws.cell(i, 1).value
-        qa.answers = ws.cell(i, 2).value
+        qa.questions = ws[i][0]
+        qa.answers = ws[i][1]
         qa.question_used = 0
         list.append(qa)
-    list.pop(0)
+
     return list
 
 
