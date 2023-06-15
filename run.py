@@ -1,10 +1,18 @@
-from openpyxl import load_workbook
+import gspread
+from google.oauth2.service_account import Credentials
 from colorama import just_fix_windows_console
 from colorama import Fore, Back, Style
 from colorama import init
 import os
 import platform
 import re
+from openpyxl import load_workbook
+
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
 
 
 EXCEL_SHEET_NAME = 'test_e_i.xlsx'
