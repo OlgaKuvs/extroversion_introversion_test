@@ -6,7 +6,9 @@ from colorama import init
 import os
 import platform
 import re
-# from openpyxl import load_workbook
+import time
+from sys import stdout
+
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -72,14 +74,22 @@ class Questions_Answers:
         self.question_used = 0
 
 
+class User:
+    def __init__(self):
+        self.name = ""
+        self.email = ""
+        self.exists = False
+
+
 print(Fore.YELLOW + Style.BRIGHT + BANNER +
       " WELCOME TO EXTROVERSION INTROVERSION TEST! \n ")
 
 
-def check_data_workbook(name_used, email_used):
+def check_data_workbook():
     """
     Check if user's data is already in the worksheet.
     If yes, print user's last test result.
+    Ask the user if they want to try the test again
     """
 
     ws = SHEET_NAME.worksheet("Users").get_all_values()
@@ -88,18 +98,20 @@ def check_data_workbook(name_used, email_used):
         name = row[0]
         email = row[1]
 
-        if name.lower() == name_used.lower() and email == email_used:
+        if name.lower() == CURRENT_USER.name.lower() and email == CURRENT_USER.email:
+            CURRENT_USER.exists = True
             result = int(row[2])
             if result > -3 and result < 3:
-                print(f" Welcome again {name_used}!" +
+                print(f" Welcome again {CURRENT_USER.name}!" +
                     " Your last result was mostly AMBIVERT")
             elif result <= -3:
-                print(f" Welcome again {name_used}!" +
+                print(f" Welcome again {CURRENT_USER.name}!" +
                     " Your last result was mostly INTROVERT")
             elif result >= 3:
-                print(f" Welcome again {name_used}!" +
+                print(f" Welcome again {CURRENT_USER.name}!" +
                     " Your last result was mostly EXTROVERT")
             return True
+
 
 
 def check_data():
@@ -110,25 +122,26 @@ def check_data():
     """
 
     while True:
-        name = input("\n Please enter your name:\n")
-        name_valid = validate_name(name)
+        name_str = input("\n Please enter your name:\n")
+        name_valid = validate_name(name_str)
 
         if name_valid:
             print(Fore.GREEN + Style.BRIGHT +
-                  f"\n Hello, {name}!\n")
+                  f"\n Hello, {name_str}!\n")
             while True:
                 email_str = input(" Please enter your email: \n")
                 if validate_email(email_str):
                     while True:
                         clear()
-                        start_test(name, email_str)
+                        start_test(name_str, email_str)
                 else:
                     print(Fore.RED + Style.BRIGHT +
                           f" ❌ Invalid e-mail {email_str}..." +
                           " Please enter correct e-mail\n")
         else:
             print(Fore.RED + Style.BRIGHT +
-                  f" ❌ Invalid name {name}... Please enter correct name\n")
+                  f" ❌ Invalid name {name_str}... Please enter correct name\n")
+
 
 
 def validate_name(name_val):
@@ -160,20 +173,35 @@ def start_test(name_tested, email_tested):
     """
     Starting test, loading lists of questions
     """
-    user_exists = check_data_workbook(name_tested, email_tested)
+    global CURRENT_USER
+    CURRENT_USER = User()
+    CURRENT_USER.name = name_tested
+    CURRENT_USER.email = email_tested
+
+    check_data_workbook()
 
     while True:
 
-        result = finish_test(user_exists)
+        go_test = test_again()
 
-        if result:
+        if go_test:
+
             print(" - - - - - - - - -  - - - - - " +
                   "- - - - - - - - - - - - - - - - - - - - - - ")
-            print(Fore.GREEN + f" Welcome, {name_tested} 🙂 !" +
-                  " Let's start. 🚀 \n Are you oriented more towards" +
-                  " the outer world or the inner world? 🤔\n ")
-            print(Fore.GREEN + " This easy test can give you a clear answer " +
-                  "and help you understand \n your personality.🧑\n ")
+            print(Fore.GREEN + f" Welcome, {CURRENT_USER.name} 🙂 ! Let's start. 🚀 \n")
+            In=" Are you oriented more towards the outer world or the inner world? 🤔\n"
+            for x in In:
+                print(Fore.GREEN + x, end='')
+                stdout.flush()
+                time.sleep(0.04)
+
+            In=" This easy test can give you a clear answer \n and help you understand your personality.🧑\n"
+            for x in In:
+                print(Fore.GREEN + x, end='')
+                stdout.flush()
+                time.sleep(0.04)
+            print("\n")
+
             print(Fore.GREEN + Style.BRIGHT + " Please enter Y for 'YES'" +
                   " answer or N for 'NO' answer. Enter Q to Quit")
             print(" - - - - - - - - -  - - - - - - - - -" +
@@ -188,18 +216,12 @@ def start_test(name_tested, email_tested):
                                         list_t_intra, list_t_extra)
 
             check_results(final_score)
-
-            insert_user_data(name_tested, email_tested, final_score)
-            user_exists = True
-
+            insert_user_data(final_score)
         else:
-            restart(name_tested, email_tested)
-            # clear()
-            # print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-            # exit()
+            restart()
 
 
-def insert_user_data(name_in, email_in, result_in):
+def insert_user_data(result_in):
     # Get data from 'Users' table
 
     ws = SHEET_NAME.worksheet("Users").get_all_values()
@@ -213,13 +235,14 @@ def insert_user_data(name_in, email_in, result_in):
         name = ws[i][0]
         email = ws[i][1]
 
-        if name.lower() == name_in.lower() and email == email_in:
-            sheet1.update_cell(i+1)
+        if name.lower() == CURRENT_USER.name.lower() and email == CURRENT_USER.email:
+            sheet1.update_cell(i+1, 3, result_in)
+            user_found = len(ws)
 
     # If it is a new user insert data to the find first empty row
 
     if user_found != len(ws):
-        sheet1.append_rows(values=[[name_in, email_in, result_in]])
+        sheet1.append_rows(values=[[CURRENT_USER.name, CURRENT_USER.email, result_in]])
 
 
 def get_next_question(inner_score, list_test_normal,
@@ -265,7 +288,7 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
         user_answer = input("🔻\n")
 
         if user_answer.lower() == "q":
-            # restart()
+            restart()
             # clear()
             # print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
             # exit()
@@ -297,11 +320,23 @@ def check_results(score):
     if score >= -3 and score <= 3:
 
         print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n" +
-              "You are mostly AMBIVERT," +
-              " \n exhibit qualities of both introversion and extroversion," +
-              "\n you can flip into either depending on their mood," +
-              "context and goals.")
+              "\n Congratulations! You finished the test.\n\n")
+        In=" You are mostly AMBIVERT"
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+        In="\n exhibit qualities of both introversion and extroversion,"
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+        In="\n you can flip into either depending on their mood, context and goals.\n"
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+
 
     elif score < -3:
         print(Fore.GREEN + Style.BRIGHT +
@@ -319,16 +354,13 @@ def check_results(score):
     print(" - - - - - - - - -  - - - - - - -" +
           "- - - - - - - - - - - - - - - - - - - - ")
 
-
-def finish_test(user_is):
-    """
-      Ask the user if they want to try the test
-      again and get the result (yes or no)
-    """
-
-    if not user_is:
+def test_again():
+      """
+      Ask the user if they want to try the test again
+     """
+      if not CURRENT_USER.exists:
         return True
-    else:
+      else:
         print(Fore.YELLOW +
               "\n Would you like to try the test again?")
 
@@ -366,16 +398,16 @@ def load_from_workbook(test_sheet):
     return list
 
 
-def restart(name_r, email_r):
+def restart():
     clear()
     print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
     while True:
         print(Fore.YELLOW +
-              "To start test, please enter Y")
+              "To start test, please enter S")
         user_answer = input("🔻\n")
-        if user_answer.lower() == "y":
+        if user_answer.lower() == "s":
                 clear()
-                start_test(name_r, email_r)
+                start_test(CURRENT_USER.name, CURRENT_USER.email)
         else:
             print(Fore.RED +
                     " ❌ Invalid data... Please enter Y to start test \n")
