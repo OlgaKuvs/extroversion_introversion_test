@@ -19,7 +19,6 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
 
-# SHEET_NAME = 'test_e_i.xlsx'
 BANNER = """
  _______  _______ ____   ___    ___ _   _ _____ ____   ___
 | ____\ \/ /_   _|  _ \ / _ \  |_ _| \ | |_   _|  _ \ / _ \\
@@ -82,32 +81,25 @@ def check_data_workbook(name_used, email_used):
     Check if user's data is already in the worksheet.
     If yes, print user's last test result.
     """
-    try:
-        # wb2 = load_workbook(EXCEL_SHEET_NAME)
-        SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
-    except FileNotFoundError as fnf_error:
-        print(Fore.RED + Style.BRIGHT + fnf_error)
-    else:
-        ws = SHEET_NAME.worksheet("Users").get_all_values()
-        # stock = SHEET.worksheet("stock").get_all_values()
-        # ws[0].pop()
 
-        for row in ws:
-            name = row[0]
-            email = row[1]
+    ws = SHEET_NAME.worksheet("Users").get_all_values()
 
-            if name.lower() == name_used.lower() and email == email_used:
-                result = int(row[2])
-                if result > -3 and result < 3:
-                    print(f" Welcome again {name_used}!" +
-                        " Your last result was mostly AMBIVERT")
-                elif result <= -3:
-                    print(f" Welcome again {name_used}!" +
-                        " Your last result was mostly INTROVERT")
-                elif result >= 3:
-                    print(f" Welcome again {name_used}!" +
-                        " Your last result was mostly EXTROVERT")
-                return True
+    for row in ws:
+        name = row[0]
+        email = row[1]
+
+        if name.lower() == name_used.lower() and email == email_used:
+            result = int(row[2])
+            if result > -3 and result < 3:
+                print(f" Welcome again {name_used}!" +
+                    " Your last result was mostly AMBIVERT")
+            elif result <= -3:
+                print(f" Welcome again {name_used}!" +
+                    " Your last result was mostly INTROVERT")
+            elif result >= 3:
+                print(f" Welcome again {name_used}!" +
+                    " Your last result was mostly EXTROVERT")
+            return True
 
 
 def check_data():
@@ -201,21 +193,17 @@ def start_test(name_tested, email_tested):
             user_exists = True
 
         else:
-            clear()
-            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-            exit()
+            restart(name_tested, email_tested)
+            # clear()
+            # print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+            # exit()
 
 
 def insert_user_data(name_in, email_in, result_in):
-    # Open worksheet
-    try:
-        # wb2 = load_workbook(EXCEL_SHEET_NAME)
-        SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
-    except FileNotFoundError as fnf_error:
-        print(Fore.RED + fnf_error)
-    else:
-        ws = SHEET_NAME.worksheet("Users").get_all_values()
-        sheet1 = SHEET_NAME.worksheet("Users")
+    # Get data from 'Users' table
+
+    ws = SHEET_NAME.worksheet("Users").get_all_values()
+    sheet1 = SHEET_NAME.worksheet("Users")
 
     # Find if user exists and overwrite test result
 
@@ -226,18 +214,12 @@ def insert_user_data(name_in, email_in, result_in):
         email = ws[i][1]
 
         if name.lower() == name_in.lower() and email == email_in:
-            # rownum = sheet1.index + 1
-            sheet1.update_cell(i+1, 3, result_in)
-            user_found = len(ws)
+            sheet1.update_cell(i+1)
+
     # If it is a new user insert data to the find first empty row
+
     if user_found != len(ws):
         sheet1.append_rows(values=[[name_in, email_in, result_in]])
-
-
-        # ws.cell(row=row, column=1).value = name_in
-        # ws.cell(row=row, column=2).value = email_in
-        # ws.cell(row=row, column=3).value = result_in
-    # SHEET_NAME.save(EXCEL_SHEET_NAME)
 
 
 def get_next_question(inner_score, list_test_normal,
@@ -283,9 +265,10 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
         user_answer = input("🔻\n")
 
         if user_answer.lower() == "q":
-            clear()
-            print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-            exit()
+            # restart()
+            # clear()
+            # print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+            # exit()
         elif (user_answer.lower() == "y" and key_answer == 1):
             score += 1
             test_item.question_used = 1
@@ -364,18 +347,15 @@ def finish_test(user_is):
 
 
 def load_from_workbook(test_sheet):
-    # open worksheet
-    try:
-        SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
-    except FileNotFoundError as fnf_error:
-        print(Fore.WHITE + Back.RED + fnf_error)
-    else:
-        ws = SHEET_NAME.worksheet(test_sheet).get_all_values()
+
+    # Get test questions from the worksheet
+
+    ws = SHEET_NAME.worksheet(test_sheet).get_all_values()
 
     list = []
-    # row = ws.max_row + 1
 
     # populate list with object which contains questions, answer keys and flag
+
     for i in range(1, len(ws)):
         qa = Questions_Answers()
         qa.questions = ws[i][0]
@@ -384,6 +364,21 @@ def load_from_workbook(test_sheet):
         list.append(qa)
 
     return list
+
+
+def restart(name_r, email_r):
+    clear()
+    print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
+    while True:
+        print(Fore.YELLOW +
+              "To start test, please enter Y")
+        user_answer = input("🔻\n")
+        if user_answer.lower() == "y":
+                clear()
+                start_test(name_r, email_r)
+        else:
+            print(Fore.RED +
+                    " ❌ Invalid data... Please enter Y to start test \n")
 
 
 check_data()
