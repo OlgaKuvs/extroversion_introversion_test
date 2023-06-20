@@ -1,11 +1,11 @@
-import gspread
-from google.oauth2.service_account import Credentials
-from colorama import just_fix_windows_console
-from colorama import Fore, Back, Style
-from colorama import init
 import os
 import platform
 import re
+import gspread
+from google.oauth2.service_account import Credentials
+from colorama import just_fix_windows_console
+from colorama import Fore, Style
+from colorama import init
 import time
 from sys import stdout
 
@@ -23,10 +23,10 @@ SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
 
 BANNER = """
  _______  _______ ____   ___    ___ _   _ _____ ____   ___
-| ____\ \/ /_   _|  _ \ / _ \  |_ _| \ | |_   _|  _ \ / _ \\
+| ____  \/ /_   _|  _ \ / _ \  |_ _| \ | |_   _|  _ \ / _ \
 |  _|  \  /  | | | |_) | | | |  | ||  \| | | | | |_) | | | |
 | |___ /  \  | | |  _ <| |_| |  | || |\  | | | |  _ <| |_| |
-|_____/_/\_\ |_| |_|  \\_\\___/  |___|_| \\_| |_| |_|  \\_\\___/
+|_____/_/\_\ |_| |_|  \_\___/  |___|_| \_| |_| |_|  \_\___/
 
  _____ _____ ____ _____
 |_   _| ____/ ___|_   _|
@@ -39,7 +39,7 @@ BANNER = """
 THANK_YOU = """
  _____ _   _    _    _   _ _  __ __   _____  _   _ _
 |_   _| | | |  / \  | \ | | |/ / \ \ / / _ \| | | | |
-  | | | |_| | / _ \ |  \| | ' /   \ V / | | | | | | |
+  | | | |_| | / _\  |  \| | ' /   \ V / | | | | | | |
   | | |  _  |/ ___ \| |\  | . \    | || |_| | |_| |_|
   |_| |_| |_/_/   \_\_| \_|_|\_\   |_| \___/ \___/(_)
 
@@ -52,7 +52,7 @@ cursor_shape = '\x1b[3 q'
 print(cursor_shape, end='')
 
 
-def clear():
+def clear_terminal():
     # Check os and clear the terminal
     plt = platform.system()
 
@@ -64,10 +64,11 @@ def clear():
             return os.system('clear')
     clear()
 
-# Class for the questions and answer key instances and used question flag
-
 
 class Questions_Answers:
+    """
+    Class for the questions and answer key instances and used question flag
+    """
     def __init__(self):
         self.questions = ""
         self.answers = ""
@@ -75,6 +76,9 @@ class Questions_Answers:
 
 
 class User:
+    """
+    Class for each user to store name, email and flag for returning user
+    """
     def __init__(self):
         self.name = ""
         self.email = ""
@@ -97,21 +101,26 @@ def check_data_workbook():
     for row in ws:
         name = row[0]
         email = row[1]
+        """
+        Have to define new variables because of error E501:
+        line too long (if statement)
+        """
+        c_name = CURRENT_USER.name
+        c_email = CURRENT_USER.email
 
-        if name.lower() == CURRENT_USER.name.lower() and email == CURRENT_USER.email:
+        if name.lower() == c_name.lower() and email == c_email:
             CURRENT_USER.exists = True
             result = int(row[2])
             if result > -3 and result < 3:
                 print(f" Welcome again {CURRENT_USER.name}!" +
-                    " Your last result was mostly AMBIVERT")
+                      " Your last result was mostly AMBIVERT")
             elif result <= -3:
                 print(f" Welcome again {CURRENT_USER.name}!" +
-                    " Your last result was mostly INTROVERT")
+                      " Your last result was mostly INTROVERT")
             elif result >= 3:
                 print(f" Welcome again {CURRENT_USER.name}!" +
-                    " Your last result was mostly EXTROVERT")
+                      " Your last result was mostly EXTROVERT")
             return True
-
 
 
 def check_data():
@@ -132,7 +141,7 @@ def check_data():
                 email_str = input(" Please enter your email: \n")
                 if validate_email(email_str):
                     while True:
-                        clear()
+                        clear_terminal()
                         start_test(name_str, email_str)
                 else:
                     print(Fore.RED + Style.BRIGHT +
@@ -141,7 +150,6 @@ def check_data():
         else:
             print(Fore.RED + Style.BRIGHT +
                   f" ❌ Invalid name {name_str}... Please enter correct name\n")
-
 
 
 def validate_name(name_val):
@@ -171,7 +179,9 @@ def validate_email(email_val):
 
 def start_test(name_tested, email_tested):
     """
-    Starting test, loading lists of questions
+    Starting test, creating user instance from User class,
+    printing welcome message and test description,
+    loading lists of questions.
     """
     global CURRENT_USER
     CURRENT_USER = User()
@@ -188,14 +198,24 @@ def start_test(name_tested, email_tested):
 
             print(" - - - - - - - - -  - - - - - " +
                   "- - - - - - - - - - - - - - - - - - - - - - ")
-            print(Fore.GREEN + f" Welcome, {CURRENT_USER.name} 🙂 ! Let's start. 🚀 \n")
-            In=" Are you oriented more towards the outer world or the inner world? 🤔\n"
+            print(Fore.GREEN +
+                  f" Welcome, {CURRENT_USER.name} 🙂 ! Let's start. 🚀 \n")
+            In = " Are you oriented more towards the outer world"
             for x in In:
                 print(Fore.GREEN + x, end='')
                 stdout.flush()
                 time.sleep(0.04)
-
-            In=" This easy test can give you a clear answer \n and help you understand your personality.🧑\n"
+            In = " or the inner world? 🤔\n"
+            for x in In:
+                print(Fore.GREEN + x, end='')
+                stdout.flush()
+                time.sleep(0.04)
+            In = " This easy test can give you a clear answer"
+            for x in In:
+                print(Fore.GREEN + x, end='')
+                stdout.flush()
+                time.sleep(0.04)
+            In = "\n and help you understand your personality.🧑\n"
             for x in In:
                 print(Fore.GREEN + x, end='')
                 stdout.flush()
@@ -234,20 +254,30 @@ def insert_user_data(result_in):
     for i in range(1, len1):
         name = ws[i][0]
         email = ws[i][1]
+        """
+        Have to define new variables because of error E501:
+        line too long (if statement)
+        """
+        c_name = CURRENT_USER.name
+        c_email = CURRENT_USER.email
 
-        if name.lower() == CURRENT_USER.name.lower() and email == CURRENT_USER.email:
+        if name.lower() == c_name.lower() and email == c_email:
             sheet1.update_cell(i+1, 3, result_in)
             user_found = len(ws)
 
     # If it is a new user insert data to the find first empty row
 
     if user_found != len(ws):
-        sheet1.append_rows(values=[[CURRENT_USER.name, CURRENT_USER.email, result_in]])
+        sheet1.append_rows(values=[[c_name, c_email, result_in]])
+        CURRENT_USER.exists = True
 
 
 def get_next_question(inner_score, list_test_normal,
                       list_test_intra, list_test_extra):
-    # Сhoose a category of questions depending on the score.
+
+    """
+    Сhoose a category of questions depending on the score.
+    """
 
     if inner_score > -3 and inner_score < 3:
         for i in range(len(list_test_normal)):
@@ -289,9 +319,6 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
 
         if user_answer.lower() == "q":
             restart()
-            # clear()
-            # print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
-            # exit()
         elif (user_answer.lower() == "y" and key_answer == 1):
             score += 1
             test_item.question_used = 1
@@ -310,10 +337,11 @@ def check_answers(list_test_normal, list_test_intra, list_test_extra):
 
 
 def check_results(score):
+    """
+    Check results depending on score and print them.
+    """
 
-    # Check results depending on score and print them.
-
-    clear()
+    clear_terminal()
 
     print(" - - - - - - - - -  - - - - - - - - " +
           "- - - - - - - - - - - - - - - - - - - ")
@@ -321,22 +349,22 @@ def check_results(score):
 
         print(Fore.GREEN + Style.BRIGHT +
               "\n Congratulations! You finished the test.\n\n")
-        In=" You are mostly AMBIVERT"
+        In = " You are mostly AMBIVERT"
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        In="\n exhibit qualities of both introversion and extroversion,"
+        In = "\n exhibit qualities of both introversion and extroversion, you "
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        In="\n you can flip into either depending on their mood, context and goals.\n"
+        In = "can flip into either depending on their mood, context and goals."
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-
+        print("\n")
 
     elif score < -3:
         print(Fore.GREEN + Style.BRIGHT +
@@ -348,19 +376,28 @@ def check_results(score):
 
     elif score > 3:
         print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n" +
-              " You are mostly EXTROVERT, \n you enjoy being around " +
-              "other people and you gain energy from them.")
-    print(" - - - - - - - - -  - - - - - - -" +
-          "- - - - - - - - - - - - - - - - - - - - ")
+              "\n Congratulations! You finished the test.\n\n")
+        In = " You are mostly EXTROVERT, \n you enjoy being around "
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+        In = " \n other people and you gain energy from them. \n"
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+        print(" - - - - - - - - -  - - - - - - -" +
+              "- - - - - - - - - - - - - - - - - - - - ")
+
 
 def test_again():
-      """
-      Ask the user if they want to try the test again
-     """
-      if not CURRENT_USER.exists:
+    """
+    Ask the user if they want to try the test again
+    """
+    if not CURRENT_USER.exists:
         return True
-      else:
+    else:
         print(Fore.YELLOW +
               "\n Would you like to try the test again?")
 
@@ -368,10 +405,10 @@ def test_again():
             repeat_test = input(" Enter Y or N\n")
 
             if repeat_test.lower() == "y":
-                clear()
+                clear_terminal()
                 return True
             elif repeat_test.lower() == "n":
-                clear()
+                clear_terminal()
                 return False
             else:
                 print(Fore.RED +
@@ -379,8 +416,9 @@ def test_again():
 
 
 def load_from_workbook(test_sheet):
-
-    # Get test questions from the worksheet
+    """
+    Get test questions from the worksheet
+    """
 
     ws = SHEET_NAME.worksheet(test_sheet).get_all_values()
 
@@ -399,18 +437,21 @@ def load_from_workbook(test_sheet):
 
 
 def restart():
-    clear()
+    """
+    When user exits the test, he can start the test again
+    """
+    clear_terminal()
     print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
     while True:
         print(Fore.YELLOW +
               "To start test, please enter S")
         user_answer = input("🔻\n")
         if user_answer.lower() == "s":
-                clear()
-                start_test(CURRENT_USER.name, CURRENT_USER.email)
+            clear_terminal()
+            start_test(CURRENT_USER.name, CURRENT_USER.email)
         else:
             print(Fore.RED +
-                    " ❌ Invalid data... Please enter Y to start test \n")
+                  " ❌ Invalid data... Please enter Y to start test \n")
 
 
 check_data()
