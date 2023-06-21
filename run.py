@@ -19,30 +19,36 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
+
+try:
+    SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
+except gspread.exceptions.SpreadsheetNotFound as e:
+    print(Fore.RED + "Trying to open non-existent or inaccessible spreadsheet document.")
+    exit()
+
 
 BANNER = """
 
- ######   #####  #     #  #####  #     # #######
- #     # #     #  #   #  #     # #     # #     #
- #     # #         # #   #       #     # #     #
- ######   #####     #    #       ####### #     #
- #             #    #    #       #     # #     #
- #       #     #    #    #     # #     # #     #
- #        #####     #     #####  #     # #######
+         ######   #####  #     #  #####  #     # #######
+         #     # #     #  #   #  #     # #     # #     #
+         #     # #         # #   #       #     # #     #
+         ######   #####     #    #       ####### #     #
+         #             #    #    #       #     # #     #
+         #       #     #    #    #     # #     # #     #
+         #        #####     #     #####  #     # #######
 
- ####### #######  #####  #######
-    #    #       #     #    #
-    #    #       #          #
-    #    #####    #####     #
-    #    #             #    #
-    #    #       #     #    #
-    #    #######  #####     #
-
+         ####### #######  #####  #######
+            #    #       #     #    #
+            #    #       #          #
+            #    #####    #####     #
+            #    #             #    #
+            #    #       #     #    #
+            #    #######  #####     #
 """
 
 
 THANK_YOU = """
+
  ####### #     #    #    #     # #    #    #     # ####### #     #   ###
     #    #     #   # #   ##    # #   #      #   #  #     # #     #   ###
     #    #     #  #   #  # #   # #  #        # #   #     # #     #   ###
@@ -103,8 +109,11 @@ def check_data_workbook():
     If yes, print user's last test result.
     Ask the user if they want to try the test again
     """
-
-    ws = SHEET_NAME.worksheet("Users").get_all_values()
+    try:
+        ws = SHEET_NAME.worksheet("Users").get_values()
+    except gspread.exceptions.WorksheetNotFound as e:
+        print(Fore.RED + "Trying to open non-existent sheet. Verify that the sheet name exists.")
+        exit()
 
     for row in ws:
         name = row[0]
@@ -121,13 +130,13 @@ def check_data_workbook():
             result = int(row[2])
             if result > -3 and result < 3:
                 print(f" Welcome again {CURRENT_USER.name}!" +
-                      " Your last result was mostly AMBIVERT")
+                      " Your most recent result was AMBIVERT")
             elif result <= -3:
                 print(f" Welcome again {CURRENT_USER.name}!" +
-                      " Your last result was mostly INTROVERT")
+                      " Your most recent result was INTROVERT")
             elif result >= 3:
                 print(f" Welcome again {CURRENT_USER.name}!" +
-                      " Your last result was mostly EXTROVERT")
+                      " Your most recent result was EXTROVERT")
             return True
 
 
@@ -250,10 +259,18 @@ def start_test(name_tested, email_tested):
 
 
 def insert_user_data(result_in):
+
+     # Open sheet from worksheet
+
+    try:
+        sheet1 = SHEET_NAME.worksheet("Users")
+    except gspread.exceptions.WorksheetNotFound as e:
+        print(Fore.RED + "Trying to open non-existent sheet. Verify that the sheet name exists.")
+        exit()
+
     # Get data from 'Users' table
 
-    ws = SHEET_NAME.worksheet("Users").get_all_values()
-    sheet1 = SHEET_NAME.worksheet("Users")
+    ws = sheet1.get_values()
 
     # Find if user exists and overwrite test result
 
@@ -353,50 +370,53 @@ def check_results(score):
 
     print(" - - - - - - - - -  - - - - - - - - " +
           "- - - - - - - - - - - - - - - - - - - ")
+    print(Fore.GREEN + Style.BRIGHT +
+              "\n Congratulations! You finished the test.\n\n")
     if score >= -3 and score <= 3:
-
-        print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n")
-        In = " You are mostly AMBIVERT"
+        In = " You are mostly AMBIVERT \n exhibit "
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        In = "\n exhibit qualities of both introversion and extroversion, you "
+        In = "qualities of both introversion and extroversion, you can "
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        In = "can flip into either depending on their mood, context and goals."
+        In = "flip into\n either depending on their mood, context and goals."
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        print("\n")
-
     elif score < -3:
-        print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n" +
-              " You are mostly INTROVERT," +
-              " \n you enjoy spending time alone and you feel" +
-              "more comfortable" +
-              " \n focusing on your inner thoughts and ideas. ")
-
+        In = "\n You are mostly INTROVERT, \n you enjoy spending time"
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+        In = " alone and you feel more comfortable \n focusing "
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
+        In = "on your inner thoughts and ideas."
+        for x in In:
+            print(Fore.GREEN + Style.BRIGHT + x, end='')
+            stdout.flush()
+            time.sleep(0.04)
     elif score > 3:
-        print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n")
-        In = " You are mostly EXTROVERT, \n you enjoy being around "
+        In = " You are mostly EXTROVERT, \n you enjoy being around"
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        In = " \n other people and you gain energy from them. \n"
+        In = " other people \n and you gain energy from them. \n"
         for x in In:
             print(Fore.GREEN + Style.BRIGHT + x, end='')
             stdout.flush()
             time.sleep(0.04)
-        print(" - - - - - - - - -  - - - - - - -" +
-              "- - - - - - - - - - - - - - - - - - - - ")
+    print("\n - - - - - - - - -  - - - - - - -" +
+            "- - - - - - - - - - - - - - - - - - - - ")
 
 
 def test_again():
@@ -427,8 +447,11 @@ def load_from_workbook(test_sheet):
     """
     Get test questions from the worksheet
     """
-
-    ws = SHEET_NAME.worksheet(test_sheet).get_all_values()
+    try:
+        ws = SHEET_NAME.worksheet(test_sheet).get_values()
+    except gspread.exceptions.WorksheetNotFound as e:
+        print(Fore.RED + "Trying to open non-existent sheet. Verify that the sheet name exists.")
+        exit()
 
     list = []
 
@@ -452,14 +475,14 @@ def restart():
     print(Fore.YELLOW + Style.BRIGHT + THANK_YOU)
     while True:
         print(Fore.YELLOW +
-              "To start test, please enter S")
-        user_answer = input("🔻\n")
+              "To start from the beginning, please enter S")
+        user_answer = input("\n")
         if user_answer.lower() == "s":
             clear_terminal()
             start_test(CURRENT_USER.name, CURRENT_USER.email)
         else:
             print(Fore.RED +
-                  " ❌ Invalid data... Please enter Y to start test \n")
+                  " ❌ Invalid data... Please enter S to start from the beginning \n")
 
 
 check_data()
