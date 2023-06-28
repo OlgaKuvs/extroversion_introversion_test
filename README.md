@@ -19,7 +19,8 @@
     - <a href="#colours">Colours</a>
 - <a href="#model">Data Model</a>
     - <a href="#database">Writing to Database</a>
-    - <a href="#class">Questions_Answers Class</a>
+    - <a href="#class1">Questions_Answers Class</a>
+    - <a href="#class2">User Class</a>
 - <a href="#technologies">Technologies Used</a>
 - <a href="#testing">Testing</a>
     - <a href="#validation">PEP8 Validation</a>
@@ -86,7 +87,7 @@ If user reaches -4 or 4 points, the program switches to specific questions from 
 ![](documentation/result.png)
 The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert.
 
-### <div id="Colours">Colours</div>
+### <div id="colours">Colours</div>
 I wanted to achieve a bright, eye-catching look, stick to the color theme as much as possible, and not use too many colors.
 
  - Yellow - Used for banners, headers and for test questions.
@@ -99,25 +100,31 @@ I wanted to achieve a bright, eye-catching look, stick to the color theme as muc
 ## <div id="model">Data Model</div>
 
 ### <div id="database">Writing to Database</div>
-After the user passes the test, the username, email and test result are entered into the database. Excel sheets were used to store the test questions, user's data and test results. The workbook consists of 4 tables: 'Test1', 'Test2', 'Test3' and 'Users'.
+After the user passes the test, the username, email and test result are entered into the database. Google sheets were used to store the test questions, user's data and test results. The workbook consists of 4 tables: 'Test1', 'Test2', 'Test3' and 'Users'.
 
 Each test table consists of questions and answer keys.
-![](documentation/excel_sheet_sample1.png)
+![](documentation/sheet_sample1.png)
 
 'Users' table consists of 3 columns: user's name, email and test result.
-![](documentation/excel_sheet_sample2.png)
+![](documentation/sheet_sample2.png)
 
-### <div id="class">Questions_Answers Class</div>
+### <div id="class1">Questions_Answers Class</div>
 - A Questions_Answers Class was created to contain the data of the test questions and the flag if the question has already been used.
-- A Questions_Answers has the following attributes:
+- A Questions_Answers Class has the following attributes:
     - questions: list of questions
     - answers: list of answer keys
     - question_used: a flag that indicates whether the question has already been used in the test
 
+### <div id="class2">User Class</div>
+- A User Class was created to store the username, email, and flag for the returning user.
+- A User Class has the following attributes:
+    - name: username
+    - emails: user email
+    - exists: a flag indicating if the user has already passed the test
+
 ## <div id="technologies">Technologies Used</div>
 - The application was developed with Python
     - Python Packages:
-        - [Openpyxl](https://pypi.org/project/openpyxl/) as a Python library to read/write Excel files.
         - [Colorama](https://pypi.org/project/colorama/) to print colored terminal text
         - Platform module and OS Module to check the system/OS name and interact with the underlying operating system
 - [Heroku](https://www.heroku.com/platform) was used for deployment

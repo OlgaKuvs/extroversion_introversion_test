@@ -23,7 +23,8 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 try:
     SHEET_NAME = GSPREAD_CLIENT.open("test_e_i")
 except gspread.exceptions.SpreadsheetNotFound as e:
-    print(Fore.RED + "Trying to open non-existent or inaccessible spreadsheet document.")
+    print(Fore.RED + "Trying to open non-existent or" +
+          " inaccessible spreadsheet document.")
     exit()
 
 
@@ -37,13 +38,14 @@ BANNER = """
          #       #     #    #    #     # #     # #     #
          #        #####     #     #####  #     # #######
 
-         ####### #######  #####  #######
-            #    #       #     #    #
-            #    #       #          #
-            #    #####    #####     #
-            #    #             #    #
-            #    #       #     #    #
-            #    #######  #####     #
+                 ####### #######  #####  #######
+                     #    #       #     #    #
+                     #    #       #          #
+                     #    #####    #####     #
+                     #    #             #    #
+                     #    #       #     #    #
+                     #    #######  #####     #
+
 """
 
 
@@ -112,7 +114,8 @@ def check_data_workbook():
     try:
         ws = SHEET_NAME.worksheet("Users").get_values()
     except gspread.exceptions.WorksheetNotFound as e:
-        print(Fore.RED + "Trying to open non-existent sheet. Verify that the sheet name exists.")
+        print(Fore.RED + "Trying to open non-existent sheet." +
+              " Verify that the sheet name exists.")
         exit()
 
     for row in ws:
@@ -120,7 +123,7 @@ def check_data_workbook():
         email = row[1]
         """
         Have to define new variables because of error E501:
-        line too long (if statement)
+        line too long (row 130, if statement)
         """
         c_name = CURRENT_USER.name
         c_email = CURRENT_USER.email
@@ -260,12 +263,13 @@ def start_test(name_tested, email_tested):
 
 def insert_user_data(result_in):
 
-     # Open sheet from worksheet
+    # Open sheet from worksheet
 
     try:
         sheet1 = SHEET_NAME.worksheet("Users")
     except gspread.exceptions.WorksheetNotFound as e:
-        print(Fore.RED + "Trying to open non-existent sheet. Verify that the sheet name exists.")
+        print(Fore.RED + "Trying to open non-existent sheet." +
+              " Verify that the sheet name exists.")
         exit()
 
     # Get data from 'Users' table
@@ -281,7 +285,7 @@ def insert_user_data(result_in):
         email = ws[i][1]
         """
         Have to define new variables because of error E501:
-        line too long (if statement)
+        line too long (row 292, if statement)
         """
         c_name = CURRENT_USER.name
         c_email = CURRENT_USER.email
@@ -371,7 +375,7 @@ def check_results(score):
     print(" - - - - - - - - -  - - - - - - - - " +
           "- - - - - - - - - - - - - - - - - - - ")
     print(Fore.GREEN + Style.BRIGHT +
-              "\n Congratulations! You finished the test.\n\n")
+          "\n Congratulations! You finished the test.\n\n")
     if score >= -3 and score <= 3:
         In = " You are mostly AMBIVERT \n exhibit "
         for x in In:
@@ -416,7 +420,7 @@ def check_results(score):
             stdout.flush()
             time.sleep(0.04)
     print("\n - - - - - - - - -  - - - - - - -" +
-            "- - - - - - - - - - - - - - - - - - - - ")
+          "- - - - - - - - - - - - - - - - - - - - ")
 
 
 def test_again():
@@ -450,7 +454,8 @@ def load_from_workbook(test_sheet):
     try:
         ws = SHEET_NAME.worksheet(test_sheet).get_values()
     except gspread.exceptions.WorksheetNotFound as e:
-        print(Fore.RED + "Trying to open non-existent sheet. Verify that the sheet name exists.")
+        print(Fore.RED + "Trying to open non-existent sheet." +
+              " Verify that the sheet name exists.")
         exit()
 
     list = []
@@ -482,7 +487,8 @@ def restart():
             start_test(CURRENT_USER.name, CURRENT_USER.email)
         else:
             print(Fore.RED +
-                  " ❌ Invalid data... Please enter S to start from the beginning \n")
+                  " ❌ Invalid data... Please enter S" +
+                  " to start from the beginning \n")
 
 
 check_data()
