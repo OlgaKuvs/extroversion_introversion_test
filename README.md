@@ -21,7 +21,8 @@
     - <a href="#database">Writing to Database</a>
     - <a href="#class1">Questions_Answers Class</a>
     - <a href="#class2">User Class</a>
-- <a href="#technologies">Technologies Used</a>
+- <a href="#technologies">Technologies and Libraries Used</a>
+    - <a href="#google">Google API Setup</a>
 - <a href="#testing">Testing</a>
     - <a href="#validation">PEP8 Validation</a>
     - <a href="#manual_testing">Manual Testing</a>
@@ -67,6 +68,7 @@ The below flowchart shows the order in which actions are taken and how the progr
 ## <div id="features">Features</div>
 ### <div id="message">Introductory Message</div>
 When the user runs the system, they will be greeted with a logo and a welcome message.
+![screenshot](documentation/screenshot.png)
 
 ### <div id="validation">Data Validation</div>
 ![](documentation/screenshot_test2.png)
@@ -86,6 +88,10 @@ If user reaches -4 or 4 points, the program switches to specific questions from 
 ### <div id="result">Test Result</div>
 ![](documentation/result.png)
 The final result of the test is determined by the score: if the score is less than -3, then the result is an introverted user. If the score is greater than 3, then the result is the extrovert user. If the score is between -3 and 3, the user is ambivert.
+
+At the end of the test, or when the user presses Q (quit), a banner appears "Thank you".
+![](documentation/screenshot_test4.png)
+
 
 ### <div id="colours">Colours</div>
 I wanted to achieve a bright, eye-catching look, stick to the color theme as much as possible, and not use too many colors.
@@ -116,20 +122,84 @@ Each test table consists of questions and answer keys.
     - question_used: a flag that indicates whether the question has already been used in the test
 
 ### <div id="class2">User Class</div>
-- A User Class was created to store the username, email, and flag for the returning user.
+- A User Class was created to contain the username, email, and flag for the returning user.
 - A User Class has the following attributes:
     - name: username
     - emails: user email
     - exists: a flag indicating if the user has already passed the test
 
-## <div id="technologies">Technologies Used</div>
+## <div id="technologies">Technologies and Libraries Used</div>
 - The application was developed with Python
     - Python Packages:
+        - [gspread](https://docs.gspread.org/en/v5.9.0/) allows communication with Google Sheets.
         - [Colorama](https://pypi.org/project/colorama/) to print colored terminal text
+        - sys.stdout.flush() used to temporarily store data in a buffer memory before it gets written to terminal
         - Platform module and OS Module to check the system/OS name and interact with the underlying operating system
 - [Heroku](https://www.heroku.com/platform) was used for deployment
 - [Flowchart Maker and Online Diagram Software](https://app.diagrams.net/) was used to generate the flowchart
+- [Google Worksheet](https://www.google.co.uk/sheets/about/) used as database.
 - [VS Code](https://code.visualstudio.com/) was used for development
+
+### <div id="google">Google API Setup</div>
+The value of using the Google API Sheets library is that it's built on HTTP and JSON, so any standard HTTP client can send requests to it and parse the responses. In other words, our project can feed data to the Google Sheet using an API and we can see the result of that data in a format suitable for Google Sheets.
+
+The reason for using Google Sheets for this project is to access the questionnaire and store and access user data.
+
+<details>
+<summary>Setting Up the Google API</summary>
+
+    1. Create a Google account.
+    2. Create a Google Sheet and name the file. Preferably matching your GitHub repository name.
+    3. Then visit Google Cloud Platform
+    4. Next to the Google Cloud Platform menu, click "Select a project" and then select "New project".
+    5. Then give your project a name. Preferably matching your GitHub repository and Google Sheets doc name.
+    Then click "Create".
+    6. Then click "Select project" again. But this time select the name
+    of the project you just created.
+    7. Now you're on your project dashboard, ensure the side menu is open
+    and select "API & Services" and then "Library".
+    8. First search for "Google Drive" in the search bar. Click on the API at the top and click "Enable".
+    9. Now you will need to create credentials to access the Google Sheets. Click "Create credentials".
+    10. In the form, under "Which API are you using?", please select "Google Drive API".
+    11. For "What data will you be accessing?", please select "Application Data".
+    12. For the "Are you planning to use this API with Compute Engine, Kubernetes Engine,
+    App Engine, or Cloud Functions?" question, please select "No, I'm not using them".
+    13. Click "Next", then "Done".
+    14. Now enter a Service account name. Preferably matching your
+    Google Cloud project name if available.
+    15. Then go to "Grant this service account access to project".
+    16. In the Role dropdown box, select "Basic", then "Editor". Press "Continue".
+    17. "Grant users access to this service account" can be left blank. Click "Done".
+    18. On the next page, click on the service account that has just been created.
+    19. Now click on the "Keys" tab.
+    20. Click the "Add Key" dropdown button and select "Create New Key".
+    21. Select "JSON" and then click "Create". This will trigger the .json file
+    with your API credentials in it to download to your machine.
+    22. Now, click on the main burger menu, select
+    "API & Services" and select "Library".
+    23. In the search bar, enter "Google Sheets" and select the "Google Sheets API" option and click "Enable".
+</details>
+
+<details>
+<summary>Link your Google API Credentials to Gitpod Workspace</summary>
+
+    1. Drag and drop the .json file from your downloads folder into your Gitpod workspace.
+    2. Rename the file to "creds.json"
+    3. Now open the creds.json file. Locate the "client_email" line and copy the email address next to it, without the quotes.
+    4. Then navigate to your Google Sheets file and open the "Share" button.
+    5. Paste in the client email address and make sure "Editor" is selected, untick "Notify People" and then click "Share".
+
+Given that your creds.json file contains sensitive information. Make sure to add this file to your gitignore file, to prevent this data being committed or sent to GitHub.
+
+To check that your creds.json file won't be committed, follow the below steps:
+
+    1. In your terminal type git add . and press enter.
+    2. Now type in git status and press enter.
+    3. If the creds.json file is not listed in the staging area, you are safe to commit your changes.
+
+</details>
+
+
 
 ## <div id="testing">Testing</div>
 ### <div id="manual_testing">Manual Testing</div>
@@ -145,7 +215,7 @@ Each test table consists of questions and answer keys.
 
 
 ### <div id="validation">PEP8 Validation</div>
-The code for run.py was passed through a [PEP8 validator](https://pep8ci.herokuapp.com/) with no issues present.
+The code for run<span>.</span>py was passed through a [PEP8 validator](https://pep8ci.herokuapp.com/) with no issues present.
 ![PEP8](documentation/validator.png)
 
 
